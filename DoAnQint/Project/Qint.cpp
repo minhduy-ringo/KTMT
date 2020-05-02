@@ -132,6 +132,57 @@ char* DecToHex(QInt a)
 	return result;
 }
 
+//Hệ nhị phân(BIN) sang Thập lục phân (HEX)
+char* BINTOHEX(QInt a)
+{
+	
+	char* result = new char[33]{ '0' };
+	int bitLength = 127;
+	short n = 32;
+	while (bitLength > 0)
+	{
+		short fourBit = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			bool bit = GetBit(a, bitLength - i);
+			fourBit += (short)bit * pow(2, i);
+		}
+		switch (fourBit)
+		{
+		case 10:
+			result[n] = 'A';
+			break;
+		case 11:
+			result[n] = 'B';
+			break;
+		case 12:
+			result[n] = 'C';
+			break;
+		case 13:
+			result[n] = 'D';
+			break;
+		case 14:
+			result[n] = 'E';
+			break;
+		case 15:
+			result[n] = 'F';
+			break;
+		default:
+			result[n] = fourBit + '0';
+			break;
+		}
+		n--;
+		bitLength -= 4;
+	}
+	for (int i = 0; i < 32; i++)
+	{
+		cout << result[i];
+	}
+	return result;
+}
+
+
+
 // Operator *
 QInt operator * (QInt const& multiplier, QInt const& multiplicand)
 {
@@ -213,3 +264,111 @@ void QInt::operator= (QInt const& a)
 // Operator <<
 
 
+//operator ==
+bool QInt::operator == (QInt const& a)
+{
+	int bitLength = 127;
+	if (this->bitLength != a.bitLength)
+		return false;
+	int i = 127 - bitLength + 1;
+	for ( i; i <= 127 ; i++) {
+		if (GetBit(*this, i) != GetBit(a, i))
+			return false;
+	}
+	return true;
+}
+// operator +
+QInt QInt::operator+(QInt const& a) 
+{
+	int bitLength = 127;
+	int bitNho = 0;
+	QInt kq;
+	InitQInt(kq);
+	for (int i = bitLength; i >= 0; i--) 
+	{
+		
+		int temp1 = GetBit(*this, i);
+		int temp2 = GetBit(a, i);
+		if ((temp1 == temp2) && (temp1 = temp2 = 0))
+		{
+			if (bitNho == 1)
+			{
+				SetBit(kq, i, 1);
+				bitNho = 0;
+			}
+			SetBit(kq, i, temp1);
+			bitNho = 0;
+		}
+		else if ((temp1 == temp2) && (temp1 = temp2 = 1))
+		{
+			if (bitNho == 1)
+			{
+				SetBit(kq, i, 0);
+				bitNho = 1;
+			}
+			SetBit(kq, i, 1);
+			bitNho = 1;
+		}
+		else {
+			SetBit(kq, i, 1);
+			bitNho = 0;
+		}
+	}
+	return kq;
+}
+// Operator <=
+bool QInt::operator <= (QInt const& b)
+{
+	//this -> a
+	// a dương b âm
+	if (this->sign == 0 && b.sign == 1)
+		return false;
+	// a âm b dương
+	if (this->sign == 1 && b.sign == 0)
+		return true;
+	// a b cùng dấu
+	// bit a dài hơn b
+	if (this->bitLength > b.bitLength)
+	{
+		return false;
+	}
+	// bit b dài hơn a
+	if (this->bitLength < b.bitLength)
+	{
+		return true;
+	}
+	// bit b b bằng nhbu
+	int i = 127 - this->bitLength + 1;
+	for (i; i <= 127; i++)
+	{
+		bool bita = GetBit(*this, i);
+		bool bitb = GetBit(b, i);
+
+		if (bita && bitb)
+			continue;
+		if (bita)
+		{
+			if (!bitb)
+				return false;
+		}
+		if (!bita)
+		{
+			if (bitb)
+				return true;
+		}
+	}
+}
+//NOT
+QInt NOTQInt(QInt a) {
+	QInt kq;
+	InitQInt(kq);
+	for (int i = 127; i >= a.bitLength; i--)
+	{
+		if (GetBit(a, i))
+			SetBit(kq, i, 0);
+		else
+			SetBit(kq, i, 1);
+	}
+
+	return kq;
+}

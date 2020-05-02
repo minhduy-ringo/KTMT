@@ -15,6 +15,9 @@ struct QInt
 	// Operator
 	bool operator>=(QInt const& a);
 	void operator=(QInt const& a);
+	bool operator==(QInt const& a);
+	QInt operator+(QInt const& a);
+	bool operator<=(QInt const& a);
 };
 
 void InitQInt(QInt &a);
@@ -24,3 +27,4 @@ void SetBit(QInt &a, int i, int bit);
 bool GetBit(QInt a, int i);
 string Div2(string s);
 char* DecToHex(QInt a);
+char* BINTOHEX(QInt a);
