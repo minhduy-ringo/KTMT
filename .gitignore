@@ -34,3 +34,6 @@
 # Debug folder
 Debug/
 Release/
+
+# vs
+.vs/
