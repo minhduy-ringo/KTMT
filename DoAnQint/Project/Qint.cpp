@@ -181,6 +181,64 @@ char* BINTOHEX(QInt a)
 	return result;
 }
 
+//operator -
+QInt operator - (QInt const& qiA, QInt const& qiB)
+{
+	QInt result;
+	InitQInt(result);
+
+	bool arrA[128], arrB[128];
+	int index = 127;
+	while (index >= 0)
+	{
+		arrA[index] = GetBit(qiA, index);
+		arrB[index] = GetBit(qiB, index);
+		if (arrB[index] == 0) arrB[index] = 1;
+		else arrB[index] = 0;
+		index--;
+	}
+	index = 127;
+	bool memoAdd1 = 0;
+	bool memoAdd = 0;
+	while (index >= 0)
+	{
+		if (memoAdd1 == 0)
+			if (arrB[index] == 1) {
+				memoAdd1 = 1;
+				arrB[index] = 0;
+			}
+			else {
+				arrB[index] = 1;
+				memoAdd1 = 0;
+			}
+
+		if (memoAdd == 0) {
+			if (arrA[index] == 0 && arrB[index] == 1) {
+				arrA[index] = 1;
+			}
+			else if (arrA[index] == 1 && arrB[index] == 1) {
+				arrA[index] = 0;
+				memoAdd = 1;
+			}
+		}
+		else{
+			if (arrA[index] == 1 && arrB[index] == 0)
+				arrA[index] = 0;
+			else if (arrA[index] == 0 && arrB[index] == 0) {
+				arrA[index] = 1;
+				memoAdd = 0;
+			}
+		}
+		index--;
+	}
+	index = 127;
+	while (index >= 0) {
+		SetBit(result, index, arrA[index]);
+		index--;
+	}
+	return result;
+}
+
 
 
 // Operator *
@@ -371,4 +429,80 @@ QInt NOTQInt(QInt a) {
 	}
 
 	return kq;
+}
+
+//operator AND
+QInt operator & (QInt const& qiA, QInt const& qiB)
+{
+	QInt result;
+	InitQInt(result);
+
+	bool arrA[128], arrB[128];
+	int index = 127;
+	while (index >= 0)
+	{
+		arrA[index] = GetBit(qiA, index);
+		arrB[index] = GetBit(qiB, index);
+		if (arrA[index] == 1) {
+			if (arrB[index] == 1) arrA[index] = 1;
+			else arrA[index] = 0;
+		}
+		index--;
+	}
+	index = 127;
+	while (index >= 0) {
+		SetBit(result, index, arrA[index]);
+		index--;
+	}
+	return result;
+}
+
+// RotateLeft
+QInt RotateLeft (QInt const& qi)
+{
+	QInt result;
+	InitQInt(result);
+
+	bool arr[128];
+	int index = 127;
+	while (index > 0)
+	{
+		arr[index - 1] = GetBit(qi, index);
+		index--;
+	}
+	bool leftmost;
+	leftmost = (qi.bigInt[0] >> 0) & 1;
+	arr[127] = leftmost;
+
+	index = 127;
+	while (index >= 0) {
+		SetBit(result, index, arr[index]);
+		index--;
+	}
+	return result;
+}
+
+// operator ShiftRight
+QInt operator >> (QInt const& qi, int n)
+{
+	QInt result;
+	InitQInt(result);
+
+	bool arr[128];
+	int index = 127;
+	while (index >= 0)
+	{
+		if (index >= n) 
+			arr[index] = 0;
+		else
+			arr[index] = GetBit(qi, index - n);
+		index--;
+	}
+
+	index = 127;
+	while (index >= 0) {
+		SetBit(result, index, arr[index]);
+		index--;
+	}
+	return result;
 }
