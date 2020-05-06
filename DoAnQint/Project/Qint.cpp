@@ -195,6 +195,8 @@ void QInt::operator= (QInt const& a)
 	this->bitLength = a.bitLength;
 }
 
+<<<<<<< HEAD
+=======
 //operator ==
 bool QInt::operator == (QInt const& a)
 {
@@ -578,6 +580,7 @@ void QInt::operator<< (int n)
 	}
 }
 
+>>>>>>> 3c5fd2421255a775c589fcc805555ea4d447da5c
 // Trim all not needed 0 bit
 string TrimBit(QInt qi)
 {

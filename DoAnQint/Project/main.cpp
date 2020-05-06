@@ -3,7 +3,7 @@
 
 int main()
 {
-	QInt q1, q2, rs;
+	QInt q1, q2, rs, rs1, rs2;
 
 	string s = "7";
 	string s2 = "-3";
@@ -15,6 +15,7 @@ int main()
 	
 	rs = q1 - q2;
 
+	cout << "____" << endl;
 	PrintQInt(rs);
 
 	int a;
