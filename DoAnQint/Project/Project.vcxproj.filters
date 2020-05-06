@@ -21,6 +21,18 @@
     <ClCompile Include="Qint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QInt_ShiftBit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QInt_WiseBit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QInt_Comparison.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QInt_Operation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Qint.h">

@@ -35,6 +35,7 @@ struct QInt
 	bool operator<=(QInt const& a);
 	void operator>>(int n);
 	void operator<<(int n);
+	QInt operator &(QInt const& a);
 };
 
 

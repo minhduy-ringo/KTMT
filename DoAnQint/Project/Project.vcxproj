@@ -115,6 +115,10 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Qint.cpp" />
+    <ClCompile Include="QInt_Comparison.cpp" />
+    <ClCompile Include="QInt_Operation.cpp" />
+    <ClCompile Include="QInt_WiseBit.cpp" />
+    <ClCompile Include="QInt_ShiftBit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Qint.h" />
