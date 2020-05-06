@@ -91,14 +91,6 @@ QInt QInt::operator- (QInt const& a)
 		index--;
 	}
 
-	index = 0;
-	while (index < 128)
-	{
-		cout << arrB[index];
-		index++;
-	}
-	cout << endl;
-
 	index = 127;
 	while (index >= 0)
 	{
