@@ -227,8 +227,12 @@ QInt QInt::operator+(QInt const& a)
 				SetBit(kq, i, 1);
 				bitNho = 0;
 			}
-			SetBit(kq, i, temp1);
-			bitNho = 0;
+			else
+			{
+				SetBit(kq, i, temp1);
+				bitNho = 0;
+			}
+			
 		}
 		else if ((temp1 == temp2) && (temp1 == temp2 == 1))
 		{
@@ -237,8 +241,12 @@ QInt QInt::operator+(QInt const& a)
 				SetBit(kq, i, 0);
 				bitNho = 1;
 			}
-			SetBit(kq, i, 1);
-			bitNho = 1;
+			else
+			{
+				SetBit(kq, i, 1);
+				bitNho = 1;
+			}
+			
 		}
 		else {
 			SetBit(kq, i, 1);
