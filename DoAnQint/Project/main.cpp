@@ -3,21 +3,20 @@
 
 int main()
 {
-	QInt qI, q2;
-	InitQInt(qI);
-	InitQInt(q2);
+	QInt q1, q2, rs;
 
-	string s = "234534256234523";
-	string s2 = "400";
-	ScanQInt(qI, s);
+	string s = "7";
+	string s2 = "-3";
+	ScanQInt(q1, s);
 	ScanQInt(q2, s2);
-	PrintQInt(qI);
+
+	PrintQInt(q1);
 	PrintQInt(q2);
 	
-	if (qI >= q2)
-	{
-		cout << "true" << endl;
-	}
-	else
-		cout << "false" << endl;
+	rs = q1 - q2;
+
+	PrintQInt(rs);
+
+	int a;
+	cin >> a;
 }

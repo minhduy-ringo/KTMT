@@ -1,13 +1,14 @@
 ﻿#include"Qint.h"
 
 // hàm khởi tạo kiểu dữ liệu Qint
-void InitQInt(QInt &a)
-{
-	for (int i = 0; i < N; i++)
-	{
-		a.bigInt[i] = 0;
-	}
-}
+//void InitQInt(QInt &a)
+//{
+//	for (int i = 0; i < N; i++)
+//	{
+//		a.bigInt[i] = 0;
+//	}
+//}
+
 // đưa từng bit vào bộ nhớ
 void SetBit(QInt &a, int i, int bit)
 {
@@ -15,6 +16,7 @@ void SetBit(QInt &a, int i, int bit)
 	int soBitDich = i % 32;
 	a.bigInt[index] = a.bigInt[index] | (bit << (31 - soBitDich));
 }
+
 // Lấy bit tại ví trí thứ i
 bool GetBit(QInt a, int i)
 {
@@ -22,6 +24,7 @@ bool GetBit(QInt a, int i)
 	int index = i % 32;
 	return (a.bigInt[arr] >> (31 - i)) & 1;
 }
+
 // Đọc chuỗi số lớn vào QInt
 void ScanQInt(QInt &a, string s)
 {
@@ -50,6 +53,7 @@ void ScanQInt(QInt &a, string s)
 
 	a.bitLength = 127 - i;
 }
+
 // hàm chia cho 2 lấy phần nguyên
 string Div2(string s)
 {
@@ -71,6 +75,7 @@ string Div2(string s)
 	}
 	return result;
 }
+
 // hàm hiện thị dạng nhị phân của Qint
 void PrintQInt(QInt a)
 {
@@ -181,18 +186,79 @@ char* BINTOHEX(QInt a)
 	return result;
 }
 
+// Operator =
+void QInt::operator= (QInt const& a)
+{
+	for (int i = 0; i < 4; i++)
+		this->bigInt[i] = a.bigInt[i];
+	this->sign = a.sign;
+	this->bitLength = a.bitLength;
+}
+
+//operator ==
+bool QInt::operator == (QInt const& a)
+{
+	int bitLength = 127;
+	if (this->bitLength != a.bitLength)
+		return false;
+	int i = 127 - bitLength + 1;
+	for ( i; i <= 127 ; i++) {
+		if (GetBit(*this, i) != GetBit(a, i))
+			return false;
+	}
+	return true;
+}
+
+// operator +
+QInt QInt::operator+(QInt const& a) 
+{
+	int bitLength = 127;
+	int bitNho = 0;
+	QInt kq;
+	for (int i = bitLength; i >= 0; i--) 
+	{
+		
+		int temp1 = GetBit(*this, i);
+		int temp2 = GetBit(a, i);
+		if ((temp1 == temp2) && (temp1 = temp2 = 0))
+		{
+			if (bitNho == 1)
+			{
+				SetBit(kq, i, 1);
+				bitNho = 0;
+			}
+			SetBit(kq, i, temp1);
+			bitNho = 0;
+		}
+		else if ((temp1 == temp2) && (temp1 = temp2 = 1))
+		{
+			if (bitNho == 1)
+			{
+				SetBit(kq, i, 0);
+				bitNho = 1;
+			}
+			SetBit(kq, i, 1);
+			bitNho = 1;
+		}
+		else {
+			SetBit(kq, i, 1);
+			bitNho = 0;
+		}
+	}
+	return kq;
+}
+
 //operator -
-QInt operator - (QInt const& qiA, QInt const& qiB)
+QInt QInt::operator- (QInt const& a)
 {
 	QInt result;
-	InitQInt(result);
 
 	bool arrA[128], arrB[128];
 	int index = 127;
 	while (index >= 0)
 	{
-		arrA[index] = GetBit(qiA, index);
-		arrB[index] = GetBit(qiB, index);
+		arrA[index] = GetBit(*this, index);
+		arrB[index] = GetBit(a, index);
 		if (arrB[index] == 0) arrB[index] = 1;
 		else arrB[index] = 0;
 		index--;
@@ -221,7 +287,7 @@ QInt operator - (QInt const& qiA, QInt const& qiB)
 				memoAdd = 1;
 			}
 		}
-		else{
+		else {
 			if (arrA[index] == 1 && arrB[index] == 0)
 				arrA[index] = 0;
 			else if (arrA[index] == 0 && arrB[index] == 0) {
@@ -239,33 +305,79 @@ QInt operator - (QInt const& qiA, QInt const& qiB)
 	return result;
 }
 
-
-
 // Operator *
-QInt operator * (QInt const& multiplier, QInt const& multiplicand)
+QInt QInt::operator* (QInt const& a)
 {
-	short k = multiplicand.bitLength;
-	QInt result;
-	InitQInt(result);
-	bool q = 0;
+	// *this = M
+	short k = a.bitLength;
+	QInt result, Q;
+	Q = a;
+	bool qBit = 0;
 
 	while (k > 0)
 	{
-		bool lastBit = GetBit(multiplicand, 127);
-		if (lastBit == 1 && q == 0)
+		bool lastBit = GetBit(Q, 127);
+		if (lastBit == 1 && qBit == 0)
 		{
-
+			result = result - *this;
+			PrintQInt(result);
 		}
-		else if (lastBit == 0 && q == 1)
+		else if (lastBit == 0 && qBit == 1)
 		{
-
+			result = result + *this;
+			PrintQInt(result);
 		}
-		else
-		{
+		qBit = GetBit(Q, 127);
+		Q >> 1;
+		result >> 1;
+		k--;
+	}
+	PrintQInt(result);
+	PrintQInt(Q);
+	return result;
+}
 
+// Operator <=
+bool QInt::operator <= (QInt const& b)
+{
+	//this -> a
+	// a dương b âm
+	if (this->sign == 0 && b.sign == 1)
+		return false;
+	// a âm b dương
+	if (this->sign == 1 && b.sign == 0)
+		return true;
+	// a b cùng dấu
+	// bit a dài hơn b
+	if (this->bitLength > b.bitLength)
+	{
+		return false;
+	}
+	// bit b dài hơn a
+	if (this->bitLength < b.bitLength)
+	{
+		return true;
+	}
+	// bit b b bằng nhbu
+	int i = 127 - this->bitLength + 1;
+	for (i; i <= 127; i++)
+	{
+		bool bita = GetBit(*this, i);
+		bool bitb = GetBit(b, i);
+
+		if (bita && bitb)
+			continue;
+		if (bita)
+		{
+			if (!bitb)
+				return false;
+		}
+		if (!bita)
+		{
+			if (bitb)
+				return true;
 		}
 	}
-	return result;
 }
 
 // Operator >=
@@ -310,116 +422,9 @@ bool QInt::operator >= (QInt const& a)
 	}
 }
 
-// Operator =
-void QInt::operator= (QInt const& a)
-{
-	for (int i = 0; i < 4; i++)
-		this->bigInt[i] = a.bigInt[i];
-	this->sign = a.sign;
-	this->bitLength = a.bitLength;
-}
-
-// Operator <<
-
-
-//operator ==
-bool QInt::operator == (QInt const& a)
-{
-	int bitLength = 127;
-	if (this->bitLength != a.bitLength)
-		return false;
-	int i = 127 - bitLength + 1;
-	for ( i; i <= 127 ; i++) {
-		if (GetBit(*this, i) != GetBit(a, i))
-			return false;
-	}
-	return true;
-}
-// operator +
-QInt QInt::operator+(QInt const& a) 
-{
-	int bitLength = 127;
-	int bitNho = 0;
-	QInt kq;
-	InitQInt(kq);
-	for (int i = bitLength; i >= 0; i--) 
-	{
-		
-		int temp1 = GetBit(*this, i);
-		int temp2 = GetBit(a, i);
-		if ((temp1 == temp2) && (temp1 = temp2 = 0))
-		{
-			if (bitNho == 1)
-			{
-				SetBit(kq, i, 1);
-				bitNho = 0;
-			}
-			SetBit(kq, i, temp1);
-			bitNho = 0;
-		}
-		else if ((temp1 == temp2) && (temp1 = temp2 = 1))
-		{
-			if (bitNho == 1)
-			{
-				SetBit(kq, i, 0);
-				bitNho = 1;
-			}
-			SetBit(kq, i, 1);
-			bitNho = 1;
-		}
-		else {
-			SetBit(kq, i, 1);
-			bitNho = 0;
-		}
-	}
-	return kq;
-}
-// Operator <=
-bool QInt::operator <= (QInt const& b)
-{
-	//this -> a
-	// a dương b âm
-	if (this->sign == 0 && b.sign == 1)
-		return false;
-	// a âm b dương
-	if (this->sign == 1 && b.sign == 0)
-		return true;
-	// a b cùng dấu
-	// bit a dài hơn b
-	if (this->bitLength > b.bitLength)
-	{
-		return false;
-	}
-	// bit b dài hơn a
-	if (this->bitLength < b.bitLength)
-	{
-		return true;
-	}
-	// bit b b bằng nhbu
-	int i = 127 - this->bitLength + 1;
-	for (i; i <= 127; i++)
-	{
-		bool bita = GetBit(*this, i);
-		bool bitb = GetBit(b, i);
-
-		if (bita && bitb)
-			continue;
-		if (bita)
-		{
-			if (!bitb)
-				return false;
-		}
-		if (!bita)
-		{
-			if (bitb)
-				return true;
-		}
-	}
-}
 //NOT
 QInt NOTQInt(QInt a) {
 	QInt kq;
-	InitQInt(kq);
 	for (int i = 127; i >= a.bitLength; i--)
 	{
 		if (GetBit(a, i))
@@ -432,10 +437,9 @@ QInt NOTQInt(QInt a) {
 }
 
 //operator AND
-QInt operator & (QInt const& qiA, QInt const& qiB)
+QInt operator& (QInt const& qiA, QInt const& qiB)
 {
 	QInt result;
-	InitQInt(result);
 
 	bool arrA[128], arrB[128];
 	int index = 127;
@@ -461,7 +465,6 @@ QInt operator & (QInt const& qiA, QInt const& qiB)
 QInt RotateLeft (QInt const& qi)
 {
 	QInt result;
-	InitQInt(result);
 
 	bool arr[128];
 	int index = 127;
@@ -482,27 +485,93 @@ QInt RotateLeft (QInt const& qi)
 	return result;
 }
 
-// operator ShiftRight
-QInt operator >> (QInt const& qi, int n)
+// operator Shift right
+//QInt QInt::operator >> (int n)
+//{
+//	QInt result;
+//	InitQInt(result);
+//
+//	bool arr[128];
+//	int index = 127;
+//	while (index >= 0)
+//	{
+//		if (index >= n) 
+//			arr[index] = 0;
+//		else
+//			arr[index] = GetBit(*this, index - n);
+//		index--;
+//	}
+//
+//	index = 127;
+//	while (index >= 0) {
+//		SetBit(result, index, arr[index]);
+//		index--;
+//	}
+//	return result;
+//}
+
+// Operator Shift right
+void QInt::operator>> (int n)
 {
-	QInt result;
-	InitQInt(result);
+	QInt temp;
+	temp = *this;
 
-	bool arr[128];
-	int index = 127;
-	while (index >= 0)
+	// Tạo lại QInt
+	for (int i = 0; i < N; i++)
 	{
-		if (index >= n) 
-			arr[index] = 0;
-		else
-			arr[index] = GetBit(qi, index - n);
-		index--;
+		this->bigInt[i] = 0;
 	}
 
-	index = 127;
-	while (index >= 0) {
-		SetBit(result, index, arr[index]);
-		index--;
+	// Xác định vị trí bit sẽ dịch
+	int shiftPos = 127 - this->bitLength + n + 1;
+	if (shiftPos > 127)
+	{
+		return;
 	}
-	return result;
+	else 
+	{
+		int i = 127 - this->bitLength + 1;
+
+		for (shiftPos; shiftPos <= 127; shiftPos++)
+		{
+			bool bit = GetBit(temp, i);
+			SetBit(*this, shiftPos, GetBit(temp, i));
+			i++;
+		}
+	}
+}
+
+// Operator Shift left
+void QInt::operator<< (int n)
+{
+	QInt temp;
+	temp = *this;
+
+	// Xác định vị trí bit sẽ dịch
+	int shiftPos = 127 - n;
+	if (shiftPos < 0)
+	{
+		return;
+	}
+	else
+	{
+		for (int i = 0; i < N; i++)
+		{
+			this->bigInt[i] = 0;
+		}
+
+		int i = 127;
+
+		for (shiftPos; shiftPos > 0; shiftPos--)
+		{
+			SetBit(*this, shiftPos, GetBit(temp, i));
+			i--;
+		}
+	}
+}
+
+// Trim all not needed 0 bit
+string TrimBit(QInt qi)
+{
+	return string();
 }
