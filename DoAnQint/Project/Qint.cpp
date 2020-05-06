@@ -220,7 +220,7 @@ QInt QInt::operator+(QInt const& a)
 		
 		int temp1 = GetBit(*this, i);
 		int temp2 = GetBit(a, i);
-		if ((temp1 == temp2) && (temp1 = temp2 = 0))
+		if ((temp1 == temp2) && (temp1 == temp2 == 0))
 		{
 			if (bitNho == 1)
 			{
@@ -230,7 +230,7 @@ QInt QInt::operator+(QInt const& a)
 			SetBit(kq, i, temp1);
 			bitNho = 0;
 		}
-		else if ((temp1 == temp2) && (temp1 = temp2 = 1))
+		else if ((temp1 == temp2) && (temp1 == temp2 == 1))
 		{
 			if (bitNho == 1)
 			{
