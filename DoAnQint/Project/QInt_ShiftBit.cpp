@@ -1,20 +1,21 @@
 ﻿#include"Qint.h"
 
 // RotateLeft
-QInt RotateLeft(QInt const& qi)
+QInt QInt:: RotateLeft()
 {
 	QInt result;
 
 	bool arr[128];
 	int index = 127;
-	while (index > 0)
+	while (index >= 0)
 	{
-		arr[index - 1] = GetBit(qi, index);
+		if(index == 127){
+			arr[index] = GetBit(*this, 0);
+		}
+		else 
+			arr[index] = GetBit(*this, index + 1);
 		index--;
 	}
-	bool leftmost;
-	leftmost = (qi.bigInt[0] >> 0) & 1;
-	arr[127] = leftmost;
 
 	index = 127;
 	while (index >= 0) {
