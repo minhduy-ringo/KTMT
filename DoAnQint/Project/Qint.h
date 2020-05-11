@@ -47,10 +47,8 @@ struct QInt
 	QInt operator ~();
 };
 
-
-
 // void InitQInt(QInt &a);
-void ScanQInt(QInt& a, string s);
+void ScanQInt(QInt& a, string s, string base);
 void PrintQInt(QInt a);
 void SetBit(QInt &a, int i, int bit);
 bool GetBit(QInt a, int i);
@@ -61,5 +59,8 @@ char* DecToHex(QInt a);
 char* BinToHex(QInt a);
 
 //
+string Calculate(QInt q1, QInt q2, string op, string base);
 list <vector<string>> Readfile(ifstream &file);
-string TrimBit(QInt qi);
+void WriteFile(ofstream &file, vector<string> v_result);
+string TrimBit(string str);
+string TrimBit(QInt q);

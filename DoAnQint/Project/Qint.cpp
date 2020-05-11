@@ -17,32 +17,43 @@ bool GetBit(QInt a, int i)
 }
 
 // Đọc chuỗi số lớn vào QInt
-void ScanQInt(QInt &a, string s)
+void ScanQInt(QInt &a, string s, string base)
 {
-	int i = 127;
-
-	if (s[0] == '-')
+	if (base == "10")
 	{
-		a.sign = 1;
-		s[0] = '0';
-	}
-	else
-		a.sign = 0;
+		int i = 127;
 
-	while (s != "0")
-	{
-		short lastNumber = s[s.length() - 1] - '0'; // Lấy chữ số cuối
-		if (lastNumber < 0 || lastNumber > 9)
+		if (s[0] == '-')
 		{
-			cout << "String number not valid" << endl;
-			break;
+			a.sign = 1;
+			s[0] = '0';
 		}
-		SetBit(a, i, lastNumber % 2);
-		s = Div2(s);	
-		i--;
-	}
+		else
+			a.sign = 0;
 
-	a.bitLength = 127 - i;
+		while (s != "0")
+		{
+			short lastNumber = s[s.length() - 1] - '0'; // Lấy chữ số cuối
+			if (lastNumber < 0 || lastNumber > 9)
+			{
+				cout << "String number not valid" << endl;
+				break;
+			}
+			SetBit(a, i, lastNumber % 2);
+			s = Div2(s);
+			i--;
+		}
+
+		a.bitLength = 127 - i;
+	}
+	if (base == "2")
+	{
+
+	}
+	if (base == "16")
+	{
+
+	}
 }
 
 // hàm chia cho 2 lấy phần nguyên
@@ -177,6 +188,104 @@ void QInt::operator= (QInt const& a)
 	this->bitLength = a.bitLength;
 }
 
+string Calculate(QInt q1, QInt q2, string op, string base)
+{
+	bool rs = 0;
+	QInt qr;
+	string result;
+	// Operation
+	if (op == "+")
+	{
+		qr = q1 + q2;
+	}
+	else if (op == "-")
+	{
+		qr = q1 - q2;
+	}
+	else if (op == "*")
+	{
+		qr = q1 * q2;
+	}
+	else if (op == "/")
+	{
+		// qr = q1 / q2;
+	}
+	// Comparison
+	else if (op == "<")
+	{
+		// rs = q1 < q2;
+		return rs ? "True" : "False";
+	}
+	else if (op == ">")
+	{
+		// rs = q1 > q2;
+		return rs ? "True" : "False";
+	}
+	else if (op == "<=")
+	{
+		rs = q1 <= q2;
+		return rs ? "True" : "False";
+	}
+	else if (op == ">=")
+	{
+		rs = q1 >= q2;
+		return rs ? "True" : "False";
+	}
+	else if (op == "==")
+	{
+		rs = q1 == q2;
+		return rs ? "True" : "False";
+	}
+	// BitWise
+	else if (op == "&")
+	{
+		qr = q1 & q2;
+	}
+	else if (op == "|")
+	{
+		// qr = q1 | q2;
+	}
+	else if (op == "^")
+	{
+		// qr = q1 ^ q2;
+	}
+	// BitShift
+	else if (op == ">>")
+	{
+		//int bitShift = atoi(BinToDec(q2));
+		// qr = q1 >> bitShift;
+	}
+	else if (op == "<<")
+	{
+		//int bitShift = atoi(BinToDec(q2));
+		// qr = q1 << bitShift;
+	}
+	else if (op == "ror")
+	{
+		//int bitRotate = atoi(BinToDec(q2));
+		// 
+	}
+	else if (op == "rol")
+	{
+		//int bitRotate = atoi(BinToDec(q2));
+		// 
+	}
+
+	// Convert to input base before return
+	if (base == "2")
+	{
+		
+	}
+	else if (base == "10")
+	{
+		//return BinToDec(qr);
+	}
+	else if (base == "16")
+	{
+		return BinToHex(qr);
+	}
+}
+
 list <vector<string>> Readfile(ifstream &file)
 {
 	string line, med;
@@ -197,8 +306,46 @@ list <vector<string>> Readfile(ifstream &file)
 	return list_command;
 }
 
-// Trim all not needed 0 bit
-string TrimBit(QInt qi)
+void WriteFile(ofstream& file, vector<string> v_result)
 {
-	return string();
+	vector<string>::iterator it;
+	for (it = v_result.begin(); it != v_result.end(); ++it) 
+	{
+		file << *it << endl;
+	}
 }
+
+// Trim all not needed 0 bit
+//string TrimBit(string str)
+//{
+//	string trimedStr;
+//	
+//	for (int i = 0; i < str.length(); i++)
+//	{
+//		if (str[i] == '0')
+//			continue;
+//		else
+//		{
+//			for (int j = i; j < str.length(); j++)
+//			{
+//				trimedStr.push_back(str[j]);
+//			}
+//			break;
+//		}
+//	}
+//	return trimedStr;
+//}
+//
+//string TrimBit(QInt q)
+//{
+//	string trimedStr;
+//	
+//	if (q.sign)
+//		return NULL;
+//
+//	for (int i = 0; i <= 127; i++)
+//	{
+//
+//	}
+//	return trimedStr;
+//}

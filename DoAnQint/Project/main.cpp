@@ -4,10 +4,9 @@
 int main(int argc, char* argv[])
 {
 	// Uncomment this to debug
-	/*argc = 3;
-	argv[1] = "QInt_input.txt";*/
+	argc = 3;
+	argv[1] = "QInt_input.txt";
 
-	// main
 	if (argc != 3)
 	{
 		cout << "Command not valid" << endl << "<.exe><input.txt><output.txt>" << endl;
@@ -26,116 +25,69 @@ int main(int argc, char* argv[])
 		{
 			list <vector<string>> list_command;
 			list <vector<string>>::iterator list_it;
+
+			string result;
+			vector<string> v_result;
+
 			list_command = Readfile(inFile);
 
 			for (list_it = list_command.begin(); list_it != list_command.end(); ++list_it)
 			{
 				vector<string> token = *list_it;
-				QInt q;
+				QInt q1,q2,qr;
 				switch (token.size())
 				{
 				case 3:
+					ScanQInt(qr, token[2], token[0]);
 					if (token[0] == "2" && token[1] == "10")
 					{
-						//DecToBin
+						//DecToBin(q)
 					}
 					if (token[0] == "10" && token[1] == "2")
 					{
-						//BinToDec
+						//BinToDec(q)
 					}
 					if (token[0] == "2" && token[1] == "16")
 					{
-						BinToHex(q);
+						BinToHex(qr);
+						
 					}
 					if (token[0] == "10" && token[1] == "16")
 					{
-						DecToHex(q);
+						DecToHex(qr);
 					}
+					if (token[1] == "~")
+					{
+						qr = ~ qr;
+					}
+					v_result.push_back(result);
 					break;
 				case 4:
-					if (token[2] == "+")
-					{
-
-					}
-					if (token[2] == "-")
-					{
-
-					}
-					if (token[2] == "*")
-					{
-
-					}
-					if (token[2] == "/")
-					{
-
-					}
-					if (token[2] == "<")
-					{
-
-					}
-					if (token[2] == ">")
-					{
-
-					}
-					if (token[2] == "<=")
-					{
-
-					}
-					if (token[2] == ">=")
-					{
-
-					}
-					if (token[2] == "==")
-					{
-
-					}
-					if (token[2] == "&")
-					{
-
-					}
-					if (token[2] == "|")
-					{
-
-					}
-					if (token[2] == "^")
-					{
-
-					}
-					if (token[2] == "~")
-					{
-						
-					}
-					if (token[2] == ">>")
-					{
-
-					}
-					if (token[2] == "<<")
-					{
-
-					}
-					if (token[2] == "ror")
-					{
-
-					}
-					if (token[2] == "rol")
-					{
-
-					}
-					break;
-				default:
+					ScanQInt(q1, token[1], token[0]);
+					ScanQInt(q2, token[3], token[0]);
+					result = Calculate(q1, q2, token[2], token[0]);
+					v_result.push_back(result);
 					break;
 				}
 			}
 			
+			ofstream outFile;
+			outFile.open(argv[2], ios::out);
+			WriteFile(outFile, v_result);
+
+			inFile.close();
+			outFile.close();
+
+			return 1;
 		}
 	}
 
 	/*QInt q1, q2, rs, rs1, rs2;
 
-	string s = "10";
+	string s = "8793278316383117319";
 	string s2 = "7";
-	ScanQInt(q1, s);
-	ScanQInt(q2, s2);
+	ScanQInt(q1, s, "10");
+	ScanQInt(q2, s2, "10");
 
 	PrintQInt(q1);
 	PrintQInt(q2);
