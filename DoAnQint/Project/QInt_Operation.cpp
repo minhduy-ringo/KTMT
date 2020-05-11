@@ -4,36 +4,48 @@
 QInt QInt::operator+(QInt const& a)
 {
 	int bitLength = 127;
-	int bitNho = 0;
+	bool bitNho = 0;
 	QInt kq;
 	for (int i = bitLength; i >= 0; i--)
 	{
 
-		int temp1 = GetBit(*this, i);
-		int temp2 = GetBit(a, i);
-		if ((temp1 == temp2) && (temp1 == temp2 == 0))
+		bool temp1 = GetBit(*this, i);
+		bool temp2 = GetBit(a, i);
+		
+		if ((temp1 == temp2) && (temp1 == 0))
 		{
 			if (bitNho == 1)
 			{
 				SetBit(kq, i, 1);
 				bitNho = 0;
 			}
-			SetBit(kq, i, temp1);
-			bitNho = 0;
+			else {
+				SetBit(kq, i, temp1);
+				bitNho = 0;
+			}
 		}
-		else if ((temp1 == temp2) && (temp1 == temp2 == 1))
+		else if ((temp1 == temp2) && (temp1 == 1))
 		{
+			if (bitNho == 1)
+			{
+				SetBit(kq, i, 1);
+				bitNho = 1;
+			}
+			else {
+				SetBit(kq, i, 0);
+				bitNho = 1;
+			}
+		}
+		else {
 			if (bitNho == 1)
 			{
 				SetBit(kq, i, 0);
 				bitNho = 1;
 			}
-			SetBit(kq, i, 1);
-			bitNho = 1;
-		}
-		else {
-			SetBit(kq, i, 1);
-			bitNho = 0;
+			else {
+				SetBit(kq, i, 1);
+				bitNho = 0;
+			}
 		}
 	}
 	return kq;
