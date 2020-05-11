@@ -1,21 +1,21 @@
 #include"Qint.h"
 
 //NOT
-QInt NOTQInt(QInt a) {
+QInt QInt::operator ~()
+{
 	QInt kq;
-	for (int i = 127; i >= a.bitLength; i--)
+	for (int i = 127; i >= this->bitLength; i--)
 	{
-		if (GetBit(a, i))
+		if (GetBit(*this, i))
 			SetBit(kq, i, 0);
 		else
 			SetBit(kq, i, 1);
 	}
-
 	return kq;
 }
 
 //operator AND
-QInt QInt::operator & (QInt const& qi)
+QInt QInt::operator &(QInt const& qi)
 {
 	QInt result;
 

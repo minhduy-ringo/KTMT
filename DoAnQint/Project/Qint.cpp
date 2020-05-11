@@ -1,14 +1,5 @@
 ﻿#include"Qint.h"
 
-// hàm khởi tạo kiểu dữ liệu Qint
-//void InitQInt(QInt &a)
-//{
-//	for (int i = 0; i < N; i++)
-//	{
-//		a.bigInt[i] = 0;
-//	}
-//}
-
 // đưa từng bit vào bộ nhớ
 void SetBit(QInt &a, int i, int bit)
 {
@@ -130,17 +121,12 @@ char* DecToHex(QInt a)
 		l--;
 		bitLength -= 4;
 	}
-	for (int i = 0; i < 32; i++)
-	{
-		cout << result[i];
-	}
 	return result;
 }
 
 //Hệ nhị phân(BIN) sang Thập lục phân (HEX)
-char* BINTOHEX(QInt a)
+char* BinToHex(QInt a)
 {
-	
 	char* result = new char[33]{ '0' };
 	int bitLength = 127;
 	short n = 32;
@@ -179,10 +165,6 @@ char* BINTOHEX(QInt a)
 		n--;
 		bitLength -= 4;
 	}
-	for (int i = 0; i < 32; i++)
-	{
-		cout << result[i];
-	}
 	return result;
 }
 
@@ -193,6 +175,26 @@ void QInt::operator= (QInt const& a)
 		this->bigInt[i] = a.bigInt[i];
 	this->sign = a.sign;
 	this->bitLength = a.bitLength;
+}
+
+list <vector<string>> Readfile(ifstream &file)
+{
+	string line, med;
+	vector<string> token;
+	list <vector<string>> list_command;
+
+	while (!file.eof())
+	{
+		getline(file, line);
+		stringstream tokenize(line);
+		while (getline(tokenize, med, ' '))
+		{
+			token.push_back(med);
+		}
+		list_command.push_back(token);
+		token.clear();
+	}
+	return list_command;
 }
 
 // Trim all not needed 0 bit

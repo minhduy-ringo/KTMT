@@ -24,31 +24,6 @@ QInt RotateLeft(QInt const& qi)
 	return result;
 }
 
-// operator Shift right
-//QInt QInt::operator >> (int n)
-//{
-//	QInt result;
-//	InitQInt(result);
-//
-//	bool arr[128];
-//	int index = 127;
-//	while (index >= 0)
-//	{
-//		if (index >= n) 
-//			arr[index] = 0;
-//		else
-//			arr[index] = GetBit(*this, index - n);
-//		index--;
-//	}
-//
-//	index = 127;
-//	while (index >= 0) {
-//		SetBit(result, index, arr[index]);
-//		index--;
-//	}
-//	return result;
-//}
-
 // Operator Shift right
 void QInt::operator>> (int n)
 {
