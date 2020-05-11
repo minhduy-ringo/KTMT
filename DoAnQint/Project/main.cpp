@@ -6,6 +6,7 @@ int main(int argc, char* argv[])
 	// Uncomment this to debug
 	argc = 3;
 	argv[1] = "QInt_input.txt";
+	//"test abc"
 
 	//if (argc != 3)
 	//{
