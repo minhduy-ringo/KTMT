@@ -44,7 +44,10 @@ struct QInt
 	void operator<<(int n);
 
 	QInt operator &(QInt const& a);
+	QInt operator |(QInt const& a);
+	QInt operator ^(QInt const& a);
 	QInt operator ~();
+	QInt RotateLeft();
 };
 
 // void InitQInt(QInt &a);
