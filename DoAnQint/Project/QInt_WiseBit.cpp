@@ -68,3 +68,31 @@ QInt QInt::operator | (QInt const& qi)
 	}
 	return result;
 }
+
+//operator XOR
+QInt QInt::operator ^ (QInt const& qi)
+{
+	QInt result;
+
+	bool arrA[128], arrB[128];
+	int index = 127;
+	while (index >= 0)
+	{
+		arrA[index] = GetBit(*this, index);
+		arrB[index] = GetBit(qi, index);
+		if (arrA[index] == arrB[index] && arrA[index] == 1) {
+			arrA[index] = 0;
+		}
+		if (arrA[index] == 0 && arrB[index] == 1) {
+			arrA[index] = 1;
+		}
+		index--;
+	}
+	index = 127;
+	while (index >= 0) {
+		SetBit(result, index, arrA[index]);
+		index--;
+	}
+	return result;
+}
+
