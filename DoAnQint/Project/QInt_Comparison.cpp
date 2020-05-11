@@ -1,10 +1,10 @@
 ﻿#include"Qint.h"
 
 //operator ==
-bool QInt::operator == (QInt const& a)
+bool QInt::operator == (QInt const &a)
 {
 	int bitLength = 127;
-	if (this->bitLength != a.bitLength)
+	if (BitLength(*this) != BitLength(a))
 		return false;
 	int i = 127 - bitLength + 1;
 	for (i; i <= 127; i++) {
@@ -16,32 +16,32 @@ bool QInt::operator == (QInt const& a)
 
 
 // Operator <=
-bool QInt::operator <= (QInt const& b)
+bool QInt::operator <= (QInt const& a)
 {
 	//this -> a
 	// a dương b âm
-	if (this->sign == 0 && b.sign == 1)
+	if (GetSign(*this) == 0 && GetSign(a) == 1)
 		return false;
 	// a âm b dương
-	if (this->sign == 1 && b.sign == 0)
+	if (GetSign(*this) == 1 && GetSign(a) == 0)
 		return true;
 	// a b cùng dấu
 	// bit a dài hơn b
-	if (this->bitLength > b.bitLength)
+	if (BitLength(*this) > BitLength(a))
 	{
 		return false;
 	}
 	// bit b dài hơn a
-	if (this->bitLength < b.bitLength)
+	if (BitLength(*this) < BitLength(a))
 	{
 		return true;
 	}
 	// bit b b bằng nhbu
-	int i = 127 - this->bitLength + 1;
+	int i = 127 - BitLength(*this) + 1;
 	for (i; i <= 127; i++)
 	{
 		bool bita = GetBit(*this, i);
-		bool bitb = GetBit(b, i);
+		bool bitb = GetBit(a, i);
 
 		if (bita && bitb)
 			continue;
@@ -62,24 +62,24 @@ bool QInt::operator <= (QInt const& b)
 bool QInt::operator >= (QInt const& a)
 {
 	// a dương b âm
-	if (this->sign == 0 && a.sign == 1)
+	if (GetSign(*this) == 0 && GetSign(a) == 1)
 		return true;
 	// a âm b dương
-	if (this->sign == 1 && a.sign == 0)
+	if (GetSign(*this) == 1 && GetSign(a) == 0)
 		return false;
 	// a b cùng dấu
 	// bit a dài hơn b
-	if (this->bitLength > a.bitLength)
+	if (BitLength(*this) >  BitLength(a))
 	{
 		return true;
 	}
 	// bit b dài hơn a
-	if (this->bitLength < a.bitLength)
+	if (BitLength(*this) <  BitLength(a))
 	{
 		return false;
 	}
 	// bit a b bằng nhau
-	int i = 127 - this->bitLength + 1;
+	int i = 127 - BitLength(*this) + 1;
 	for (i; i <= 127; i++)
 	{
 		bool bit1 = GetBit(*this, i);

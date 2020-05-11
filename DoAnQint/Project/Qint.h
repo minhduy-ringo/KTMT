@@ -12,9 +12,7 @@ using namespace std;
 
 struct QInt
 {
-	int bigInt[N];// int 4 byte x 4 byte =16 byte
-	bool sign;
-	short bitLength;
+	int bigInt[N];// int 4 byte x 4 byte = 16 byte
 
 	// Contructor
 	QInt() 
@@ -23,8 +21,6 @@ struct QInt
 		{
 			this->bigInt[i] = 0;
 		}
-		this->sign = 0;
-		this->bitLength = 0;
 	}
 	// Destructor
 	~QInt() {}
@@ -48,13 +44,16 @@ struct QInt
 	QInt operator ^(QInt const& a);
 	QInt operator ~();
 	QInt RotateLeft();
+
 };
 
 // void InitQInt(QInt &a);
 void ScanQInt(QInt& a, string s, string base);
 void PrintQInt(QInt a);
-void SetBit(QInt &a, int i, int bit);
 bool GetBit(QInt a, int i);
+void SetBit(QInt &a, int i, bool bit);
+bool GetSign(QInt a);
+int BitLength(QInt a);
 string Div2(string s);
 
 //

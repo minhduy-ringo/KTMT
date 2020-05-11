@@ -38,14 +38,14 @@ void QInt::operator>> (int n)
 	}
 
 	// Xác định vị trí bit sẽ dịch
-	int shiftPos = 127 - this->bitLength + n + 1;
+	int shiftPos = 127 -  BitLength(*this) + n + 1;
 	if (shiftPos > 127)
 	{
 		return;
 	}
 	else
 	{
-		int i = 127 - this->bitLength + 1;
+		int i = 127 -  BitLength(*this) + 1;
 
 		for (shiftPos; shiftPos <= 127; shiftPos++)
 		{

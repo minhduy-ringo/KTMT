@@ -1,11 +1,28 @@
 ﻿#include"Qint.h"
 
 // đưa từng bit vào bộ nhớ
-void SetBit(QInt &a, int i, int bit)
+void SetBit(QInt &a, int i, bool bit)
 {
 	int index = i / 32;
 	int soBitDich = i % 32;
 	a.bigInt[index] = a.bigInt[index] | (bit << (31 - soBitDich));
+}
+
+bool GetSign(QInt a)
+{
+	return GetBit(a, 0);
+}
+
+int BitLength(QInt a)
+{
+	int count = 128;
+	for (int i = 0; i <= 127; i++)
+	{
+		if (GetBit(a, i))
+			break;
+		count--;
+	}
+	return count;
 }
 
 // Lấy bit tại ví trí thứ i
@@ -21,15 +38,17 @@ void ScanQInt(QInt &a, string s, string base)
 {
 	if (base == "10")
 	{
+		bool sign; 
+
 		int i = 127;
 
 		if (s[0] == '-')
 		{
-			a.sign = 1;
+			sign = 1;
 			s[0] = '0';
 		}
 		else
-			a.sign = 0;
+			sign = 0;
 
 		while (s != "0")
 		{
@@ -43,8 +62,11 @@ void ScanQInt(QInt &a, string s, string base)
 			s = Div2(s);
 			i--;
 		}
+		if (sign)
+		{
+			SetBit(a, 0, 1);
+		}
 
-		a.bitLength = 127 - i;
 	}
 	if (base == "2")
 	{
@@ -78,7 +100,7 @@ string Div2(string s)
 	return result;
 }
 
-// hàm hiện thị dạng nhị phân của Qint
+// 
 void PrintQInt(QInt a)
 {
 	for (int i = 0; i <= 127; i++)
@@ -184,8 +206,6 @@ void QInt::operator= (QInt const& a)
 {
 	for (int i = 0; i < 4; i++)
 		this->bigInt[i] = a.bigInt[i];
-	this->sign = a.sign;
-	this->bitLength = a.bitLength;
 }
 
 string Calculate(QInt q1, QInt q2, string op, string base)

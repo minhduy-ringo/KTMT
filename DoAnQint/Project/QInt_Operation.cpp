@@ -140,7 +140,7 @@ QInt QInt::operator- (QInt const& a)
 QInt QInt::operator* (QInt const& a)
 {
 	// *this = M
-	short k = a.bitLength;
+	short k =  BitLength(a);
 	QInt result, Q;
 	Q = a;
 	bool qBit = 0;
