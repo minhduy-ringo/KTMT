@@ -4,7 +4,7 @@
 QInt QInt::operator ~()
 {
 	QInt kq;
-	for (int i = 127; i >=  BitLength(*this); i--)
+	for (int i = 127; i >= 0; i--)
 	{
 		if (GetBit(*this, i))
 			SetBit(kq, i, 0);

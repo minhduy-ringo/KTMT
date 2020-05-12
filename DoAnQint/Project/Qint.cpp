@@ -200,7 +200,26 @@ char* BinToHex(QInt a)
 	}
 	return result;
 }
-
+//dectobin
+QInt DecToBin(string s)
+{
+	QInt a;
+	int i = 127;
+	while (s != "0")
+	{
+		short lastNumber = s[s.length() - 1] - '0'; // Lấy chữ số cuối
+		if (lastNumber < 0 || lastNumber > 9)
+		{
+			cout << "String number not valid" << endl;
+			break;
+		}
+		SetBit(a, i, lastNumber % 2);
+		s = Div2(s);
+		i--;
+	}
+	
+	return a;
+}
 // Operator =
 void QInt::operator= (QInt const& a)
 {

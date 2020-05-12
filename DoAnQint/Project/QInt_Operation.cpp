@@ -1,11 +1,25 @@
-#include"Qint.h"
+﻿#include"Qint.h"
 
+// Tìm số đối
+QInt QInt::SoDoi(string a)
+{
+	QInt temp = DecToBin(a);
+	QInt bu1 = ~temp;
+	QInt mot = DecToBin("1");
+	QInt kq = bu1 + mot;
+	return kq;
+}
 // operator +
 QInt QInt::operator+(QInt const& a)
 {
 	int bitLength = 127;
 	bool bitNho = 0;
 	QInt kq;
+	if (GetSign(a) == 1)
+	{
+		kq = this->operator-(a);
+		return kq;
+	}
 	for (int i = bitLength; i >= 0; i--)
 	{
 

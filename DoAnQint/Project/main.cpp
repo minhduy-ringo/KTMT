@@ -93,7 +93,23 @@ int main(int argc, char* argv[])
 
 	rs = q1 + q2;
 	PrintQInt(rs);
-
+	QInt testcong1,testcong2,kq;
+	string s3 = "3";
+	string s4 = "-3";
+	//printf("DectoBin : \n");
+	//PrintQInt(DecToBin("50"));
+	//ScanQInt(testcong1, s3, "10");
+	//ScanQInt(testcong2, s4, "10");
+	//kq = testcong1 + testcong2;
+	printf("so doi 3 : \n");
+	QInt Sodoi;
+	PrintQInt(Sodoi.SoDoi(s3));
+	//printf("t1 : \n");
+	//PrintQInt(testcong1);
+	//printf("t2 : \n");
+	//PrintQInt(testcong2);
+	//printf("ketqua : \n");
+	//PrintQInt(kq);
 	int a;
 	cin >> a;
 	return 0;
