@@ -233,16 +233,28 @@ QInt DecToBin(string s)
 string BinToDec(QInt a)
 {
 	int p = 0;
-	long decNumber = 0;
+	long decNumber=0;
+	long decNumber2=0;
 	int i = 127;
+	if (GetBit(a, 0))
+	{
+		QInt bu1 = ~a;
+		QInt mot = DecToBin("1");
+		a = bu1 + mot;
+	}
+	
 	while (i >= 0)
 	{
+		
 		int bit = GetBit(a, i);
+		cout << p << ":" << bit * pow(2, p)<<endl;
 		decNumber +=  bit * pow(2, p);
+		cout << decNumber2 << endl;
 		++p;
 		i--;
 	}
-	return to_string(decNumber);
+	cout << decNumber << endl;
+	return "-"+to_string(decNumber);
 }
 
 

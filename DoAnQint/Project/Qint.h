@@ -34,6 +34,8 @@ struct QInt
 	QInt operator-(QInt const& a);
 	QInt operator*(QInt const& a);
 
+	QInt operator/(QInt const& a);
+
 	bool operator==(QInt const& a);
 	bool operator<=(QInt const& a);
 	bool operator>=(QInt const& a);

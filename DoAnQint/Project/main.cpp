@@ -93,23 +93,27 @@ int main(int argc, char* argv[])
 
 	rs = q1 + q2;
 	PrintQInt(rs);
-	QInt testcong1,testcong2,kq;
-	string s3 = "1";
-	string s4 = "-3";
-	ScanQInt(testcong1, s3, "10");
-	ScanQInt(testcong2, s4, "10");
-	kq = testcong1 + testcong2;
+	QInt temp1,temp2,kq;
+	string s3 = "-30";
+	string s4 = "3";
+	ScanQInt(temp1, s3, "10");
+	ScanQInt(temp2, s4, "10");
+	kq = temp1 + temp2;
 	printf("t1 : \n");
-	PrintQInt(testcong1);
+	PrintQInt(temp1);
 	printf("t2 : \n");
-	PrintQInt(testcong2);
+	PrintQInt(temp2);
 	printf("ketqua : \n");
 	PrintQInt(kq);
-	printf("ketqua 2 : \n");
-	kq = ~kq;
-	QInt mot = DecToBin("1");
-	QInt kq2 = kq + mot;
-	PrintQInt(kq2);
+	//printf("ketqua 2 : \n");
+	//kq = ~kq;
+	//QInt mot = DecToBin("1");
+	//QInt kq2 = kq + mot;
+	//PrintQInt(kq2);
+	cout<<BinToDec(temp1);
+	/*cout << "Phep chia: " << endl;*/
+	/*QInt kq3;
+	kq3 = temp1 / temp2;*/
 	//printf("Bin to dec: "); 
 	//string b = BinToDec(testcong1);
 	//cout << b;
