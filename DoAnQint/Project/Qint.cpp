@@ -116,9 +116,13 @@ void PrintQInt(QInt a)
 }
 
 // Hàm chuyển QInt thập phân (DEC) sang thập lục phân (HEX)
-char* DecToHex(QInt a)
+char* DecToHex(string s)
 {
-	short wordLength = 32;
+	QInt a = DecToBin(s);
+	char* result = new char[33]{ '0' };
+	result = BinToHex(a);
+	return result;
+	/*short wordLength = 32;
 	char* result = new char[wordLength + 1];
 	memset(result, '0', wordLength);
 	result[wordLength] = '\0';
@@ -159,7 +163,7 @@ char* DecToHex(QInt a)
 		l--;
 		bitLength -= 4;
 	}
-	return result;
+	return result;*/
 }
 
 //Hệ nhị phân(BIN) sang Thập lục phân (HEX)
@@ -240,12 +244,7 @@ string BinToDec(QInt a)
 	}
 	return to_string(decNumber);
 }
-// Operator =
-void QInt::operator= (QInt const& a)
-{
-	for (int i = 0; i < 4; i++)
-		this->bigInt[i] = a.bigInt[i];
-}
+
 
 string Calculate(QInt q1, QInt q2, string op, string base)
 {
