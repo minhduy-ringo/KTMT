@@ -14,12 +14,6 @@ bool QInt::operator == (QInt const &a)
 	return true;
 }
 
-// Operator =
-void QInt::operator = (QInt const& a)
-{
-	for (int i = 0; i < 4; i++)
-		this->bigInt[i] = a.bigInt[i];
-}
 // Operator <=
 bool QInt::operator <= (QInt const& b)
 {
