@@ -96,24 +96,19 @@ int main(int argc, char* argv[])
 	QInt testcong1,testcong2,kq;
 	string s3 = "3";
 	string s4 = "-3";
-	//printf("DectoBin : \n");
-	//PrintQInt(DecToBin("50"));
 	ScanQInt(testcong1, s3, "10");
-	//ScanQInt(testcong2, s4, "10");
-	//kq = testcong1 + testcong2;
-	printf("so doi 3 : \n");
-	QInt Sodoi;
-	PrintQInt(Sodoi.SoDoi(s3));
+	ScanQInt(testcong2, s4, "10");
+	kq = testcong1 + testcong2;
 	printf("t1 : \n");
 	PrintQInt(testcong1);
-	//printf("t2 : \n");
-	//PrintQInt(testcong2);
-	//printf("ketqua : \n");
-	//PrintQInt(kq);
+	printf("t2 : \n");
+	PrintQInt(testcong2);
+	printf("ketqua : \n");
+	PrintQInt(kq);
 
-	printf("Bin to dec: "); 
-	string b = BinToDec(testcong1);
-	cout << b;
+	//printf("Bin to dec: "); 
+	//string b = BinToDec(testcong1);
+	//cout << b;
 
 	int a;
 	cin >> a;

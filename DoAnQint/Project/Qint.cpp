@@ -46,26 +46,31 @@ void ScanQInt(QInt &a, string s, string base)
 		{
 			sign = 1;
 			s[0] = '0';
+			a = a.SoDoi(s);
 		}
 		else
+		{
 			sign = 0;
-
-		while (s != "0")
-		{
-			short lastNumber = s[s.length() - 1] - '0'; // Lấy chữ số cuối
-			if (lastNumber < 0 || lastNumber > 9)
-			{
-				cout << "String number not valid" << endl;
-				break;
-			}
-			SetBit(a, i, lastNumber % 2);
-			s = Div2(s);
-			i--;
+			a = DecToBin(s);
 		}
-		if (sign)
-		{
-			SetBit(a, 0, 1);
-		}
+			
+			
+		//while (s != "0")
+		//{
+		//	short lastNumber = s[s.length() - 1] - '0'; // Lấy chữ số cuối
+		//	if (lastNumber < 0 || lastNumber > 9)
+		//	{
+		//		cout << "String number not valid" << endl;
+		//		break;
+		//	}
+		//	SetBit(a, i, lastNumber % 2);
+		//	s = Div2(s);
+		//	i--;
+		//}
+		//if (sign)
+		//{
+		//	SetBit(a, 0, 1);
+		//}
 
 	}
 	if (base == "2")

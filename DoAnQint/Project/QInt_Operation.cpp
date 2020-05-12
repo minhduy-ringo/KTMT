@@ -15,11 +15,11 @@ QInt QInt::operator+(QInt const& a)
 	int bitLength = 127;
 	bool bitNho = 0;
 	QInt kq;
-	if (GetSign(a) == 1)
+	/*if (GetSign(a) == 1)
 	{
 		kq = this->operator-(a);
 		return kq;
-	}
+	}*/
 	for (int i = bitLength; i >= 0; i--)
 	{
 
