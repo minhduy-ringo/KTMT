@@ -62,7 +62,7 @@ string Div2(string s);
 char* DecToHex(QInt a);
 char* BinToHex(QInt a);
 QInt DecToBin(string a);
-
+string BinToDec(QInt a);
 //
 string Calculate(QInt q1, QInt q2, string op, string base);
 list <vector<string>> Readfile(ifstream &file);

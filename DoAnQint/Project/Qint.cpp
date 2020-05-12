@@ -220,6 +220,21 @@ QInt DecToBin(string s)
 	
 	return a;
 }
+//bintodec
+string BinToDec(QInt a)
+{
+	int p = 0;
+	long decNumber = 0;
+	int i = 127;
+	while (i >= 0)
+	{
+		int bit = GetBit(a, i);
+		decNumber +=  bit * pow(2, p);
+		++p;
+		i--;
+	}
+	return to_string(decNumber);
+}
 // Operator =
 void QInt::operator= (QInt const& a)
 {
