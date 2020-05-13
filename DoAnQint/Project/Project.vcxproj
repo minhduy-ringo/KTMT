@@ -68,7 +68,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>1512093_18120249_1712704_1412101</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>1512093_18120249_1712704_1412101</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -115,6 +120,10 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Qint.cpp" />
+    <ClCompile Include="QInt_Comparison.cpp" />
+    <ClCompile Include="QInt_Operation.cpp" />
+    <ClCompile Include="QInt_WiseBit.cpp" />
+    <ClCompile Include="QInt_ShiftBit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Qint.h" />
