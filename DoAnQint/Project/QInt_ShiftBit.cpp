@@ -1,28 +1,43 @@
 ﻿#include"Qint.h"
 
-// RotateLeft
-QInt QInt:: RotateLeft()
+// Rotate Left
+string QInt::rol(int n)
 {
-	QInt result;
-
-	bool arr[128];
-	int index = 127;
-	while (index >= 0)
+	string s = QIntToString(*this);
+	string temp;
+	temp = s;
+	int len = temp.size();
+	char t = temp[0];
+	for (int i = 0; i < len - 1; i++)
 	{
-		if(index == 127){
-			arr[index] = GetBit(*this, 0);
-		}
-		else 
-			arr[index] = GetBit(*this, index + 1);
-		index--;
+		temp[i] = temp[i + 1];
 	}
+	temp[len - 1] = t;
 
-	index = 127;
-	while (index >= 0) {
-		SetBit(result, index, arr[index]);
-		index--;
+	while (temp[0] == '0')
+		temp.erase(0, 1);
+
+	return temp;
+}
+
+// Rotate Right
+string QInt::ror(int n) 
+{
+	string s = QIntToString(*this);
+	string temp;
+	temp = s;
+	int len = temp.size();
+	char t = temp[len - 1];
+	for (int i = len - 1; i > 0; i--)
+	{
+		temp[i] = temp[i - 1];
 	}
-	return result;
+	temp[0] = t;
+
+	while (temp[0] == '0')
+		temp.erase(0, 1);
+
+	return temp;
 }
 
 // Operator Shift right

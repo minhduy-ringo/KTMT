@@ -165,19 +165,15 @@ QInt QInt::operator* (QInt const& a)
 		if (lastBit == 1 && qBit == 0)
 		{
 			result = result - *this;
-			PrintQInt(result);
 		}
 		else if (lastBit == 0 && qBit == 1)
 		{
 			result = result + *this;
-			PrintQInt(result);
 		}
 		qBit = GetBit(Q, 127);
 		Q >> 1;
 		result >> 1;
 		k--;
 	}
-	PrintQInt(result);
-	PrintQInt(Q);
 	return result;
 }
