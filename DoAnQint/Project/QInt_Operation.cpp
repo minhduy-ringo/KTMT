@@ -152,13 +152,6 @@ QInt QInt::operator* (QInt const& a)
 	M = *this;
 	bool C;
 	int shift = 0;
-
-	// Overflow
-	int n = 2 * BitLength(a);
-	if (n > 128)
-	{
-		throw "Overflow";
-	}
 	
 	if (GetBit(*this, 0) && GetBit(a, 0)) // If QInt *this and QInt a are both negative
 	{
@@ -170,6 +163,14 @@ QInt QInt::operator* (QInt const& a)
 		M = M + one;
 		Q = ~nca;
 		Q = Q + one;
+
+		// Overflow
+		int n1 = 2 * BitLength(M);
+		int n2 = 2 * BitLength(Q);
+		if (n1 > 128 || n2 > 128)
+		{
+			throw "Overflow";
+		}
 
 		result = Multiply(M, Q);
 	}
@@ -190,14 +191,32 @@ QInt QInt::operator* (QInt const& a)
 			Q = Q + one;
 			M = *this;
 		}
+
+		// Overflow
+		int n1 = 2 * BitLength(M);
+		int n2 = 2 * BitLength(Q);
+		if (n1 > 128 || n2 > 128)
+		{
+			throw "Overflow";
+		}
+
 		result = Multiply(M, Q);
 		result = ~result;
 		result = result + one;
 	}
-	else if (GetBit(*this, 0) | GetBit(a, 0)) // If both are positive
+	else if (!(GetBit(*this, 0) | GetBit(a, 0))) // If both are positive
 	{
-		result = Multiply(M, Q);
+		// Overflow
+		int n1 = 2 * BitLength(*this);
+		int n2 = 2 * BitLength(a);
+		if (n1 > 128 || n2 > 128)
+		{
+			throw "Overflow";
+		}
+
+		result = Multiply(*this, a);
 	}
+	cout << QIntToString(result) << endl;
 	return result;
 }
 
@@ -224,10 +243,14 @@ QInt Multiply(QInt M, QInt Q)
 
 	result = Q;
 	// Combine A and Q bit string
+	int ALength = BitLength(A);
 	k = 128 - qbit - 1;
-	for (int i = 127; i >= 128 - qbit; i--)
+	while (k % 4 == 0)
+		k--;
+	for (int i = 127; i >= 128 - ALength; i--)
 	{
-		SetBit(result, k, GetBit(A, i));
+		bool bit = GetBit(A, i);
+		SetBit(result, k, bit);
 		k--;
 	}
 	return result;
