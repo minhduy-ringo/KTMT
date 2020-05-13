@@ -38,19 +38,15 @@ void ScanQInt(QInt &a, string s, string base)
 {
 	if (base == "10")
 	{
-		bool sign; 
-
 		int i = 127;
 
 		if (s[0] == '-')
 		{
-			sign = 1;
 			s[0] = '0';
 			a = a.SoDoi(s);
 		}
 		else
 		{
-			sign = 0;
 			a = DecToBin(s);
 		}
 	}
