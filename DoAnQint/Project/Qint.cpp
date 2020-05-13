@@ -187,6 +187,15 @@ QInt DecToBin(string s)
 //bintodec
 string BinToDec(QInt a)
 {
+	bool sign = 0;
+	if (GetBit(a, 0))
+	{
+		a = ~a;
+		QInt one;
+		ScanQInt(one, "1", "10");
+		a = a + one;
+		sign = 1;
+	}
 	string s = QIntToString(a);
 	string result = "0";
 
@@ -198,6 +207,11 @@ string BinToDec(QInt a)
 			string a = Multi('2', j);
 			result = AddStr(result, a);
 		}
+	}
+	if (sign)
+	{
+		string ssign = "-";
+		result = ssign + result;
 	}
 	return result;
 }
