@@ -38,19 +38,15 @@ void ScanQInt(QInt &a, string s, string base)
 {
 	if (base == "10")
 	{
-		bool sign; 
-
 		int i = 127;
 
 		if (s[0] == '-')
 		{
-			sign = 1;
 			s[0] = '0';
-			a = a.SoDoi(s);
+			a = a.TwoComponent(s);
 		}
 		else
 		{
-			sign = 0;
 			a = DecToBin(s);
 		}
 	}
@@ -260,99 +256,106 @@ string Calculate(QInt q1, QInt q2, string op, string base)
 	QInt qr;
 	string result;
 	// Operation
-	if (op == "+")
+	try
 	{
-		qr = q1 + q2;
-	}
-	else if (op == "-")
-	{
-		qr = q1 - q2;
-	}
-	else if (op == "*")
-	{
-		// qr = q1 * q2;
-	}
-	else if (op == "/")
-	{
-		// qr = q1 / q2;
-	}
-	// Comparison
-	else if (op == "<")
-	{
-		// rs = q1 < q2;
-		return rs ? "True" : "False";
-	}
-	else if (op == ">")
-	{
-		// rs = q1 > q2;
-		return rs ? "True" : "False";
-	}
-	else if (op == "<=")
-	{
-		rs = q1 <= q2;
-		return rs ? "True" : "False";
-	}
-	else if (op == ">=")
-	{
-		rs = q1 >= q2;
-		return rs ? "True" : "False";
-	}
-	else if (op == "==")
-	{
-		rs = q1 == q2;
-		return rs ? "True" : "False";
-	}
-	// BitWise
-	else if (op == "&")
-	{
-		qr = q1 & q2;
-	}
-	else if (op == "|")
-	{
-		qr = q1 | q2;
-	}
-	else if (op == "^")
-	{
-		qr = q1 ^ q2;
-	}
-	// BitShift
-	else if (op == ">>")
-	{
-		int bitShift = stoi(BinToDec(q2));
-		qr = q1;
-		qr >> bitShift;
-	}
-	else if (op == "<<")
-	{
-		int bitShift = stoi(BinToDec(q2));
-		qr = q1;
-		qr << bitShift;
-	}
-	else if (op == "ror")
-	{
-		int bitShift = stoi(BinToDec(q2));
-		string s = q1.ror(bitShift);
-		ScanQInt(qr, s, "2");
-	}
-	else if (op == "rol")
-	{
-		int bitShift = stoi(BinToDec(q2));
-		string s = q1.rol(bitShift);
-		ScanQInt(qr, s, "2");
-	}
+		if (op == "+")
+		{
+			qr = q1 + q2;
+		}
+		else if (op == "-")
+		{
+			qr = q1 - q2;
+		}
+		else if (op == "*")
+		{
+			qr = q1 * q2;
+		}
+		else if (op == "/")
+		{
+			// qr = q1 / q2;
+		}
+		// Comparison
+		else if (op == "<")
+		{
+			rs = q1 < q2;
+			return rs ? "True" : "False";
+		}
+		else if (op == ">")
+		{
+			rs = q1 > q2;
+			return rs ? "True" : "False";
+		}
+		else if (op == "<=")
+		{
+			rs = q1 <= q2;
+			return rs ? "True" : "False";
+		}
+		else if (op == ">=")
+		{
+			rs = q1 >= q2;
+			return rs ? "True" : "False";
+		}
+		else if (op == "==")
+		{
+			rs = q1 == q2;
+			return rs ? "True" : "False";
+		}
+		// BitWise
+		else if (op == "&")
+		{
+			qr = q1 & q2;
+		}
+		else if (op == "|")
+		{
+			qr = q1 | q2;
+		}
+		else if (op == "^")
+		{
+			qr = q1 ^ q2;
+		}
+		// BitShift
+		else if (op == ">>")
+		{
+			int bitShift = stoi(BinToDec(q2));
+			qr = q1;
+			qr >> bitShift;
+		}
+		else if (op == "<<")
+		{
+			int bitShift = stoi(BinToDec(q2));
+			qr = q1;
+			qr << bitShift;
+		}
+		else if (op == "ror")
+		{
+			int bitShift = stoi(BinToDec(q2));
+			string s = q1.ror(bitShift);
+			ScanQInt(qr, s, "2");
+		}
+		else if (op == "rol")
+		{
+			int bitShift = stoi(BinToDec(q2));
+			string s = q1.rol(bitShift);
+			ScanQInt(qr, s, "2");
+		}
 
-	// Convert to input base before return
-	if (base == "2")
-	{
-		return TrimBit(qr);
+		// Convert to input base before return
+		if (base == "2")
+		{
+			return TrimBit(qr);
+		}
+		else if (base == "10")
+		{
+			return TrimBit(BinToDec(qr));
+		}
+		else if (base == "16")
+		{
+			return TrimBit(BinToHex(qr));
+		}
 	}
-	else if (base == "10")
+	catch (const char* msg)
 	{
-		return TrimBit(BinToDec(qr));
-	}
-	else if (base == "16")
-	{
-		return TrimBit(BinToHex(qr));
+		return msg;
 	}
 }
 
@@ -412,13 +415,16 @@ string TrimBit(QInt q)
 
 	for (int i = 0; i <= 127; i++)
 	{
-		if (GetBit(q, i) == '0')
+		if (!GetBit(q, i))
 			continue;
 		else
 		{
 			for (int j = i; j <= 127; j++)
 			{
-				trimedStr.push_back((char)GetBit(q,i));
+				if (GetBit(q, j))
+					trimedStr.push_back('1');
+				else
+					trimedStr.push_back('0');
 			}
 			break;
 		}

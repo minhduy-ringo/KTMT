@@ -1,7 +1,7 @@
 ﻿#include"Qint.h"
 
-// Tìm số đối
-QInt QInt::SoDoi(string a)
+// Bù 2
+QInt QInt::TwoComponent(string a)
 {
 	QInt temp = DecToBin(a);
 	QInt bu1 = ~temp;
@@ -9,6 +9,7 @@ QInt QInt::SoDoi(string a)
 	QInt kq = bu1 + mot;
 	return kq;
 }
+
 // operator +
 QInt QInt::operator+(QInt const& a)
 {
@@ -77,7 +78,6 @@ QInt QInt::operator- (QInt const& a)
 		index--;
 	}
 
-	cout << endl;
 	index = 127;
 	bool memoAdd1 = 0;
 	bool memoAdd = 0;
@@ -135,7 +135,6 @@ QInt QInt::operator- (QInt const& a)
 		index--;
 	}
 
-
 	index = 127;
 	while (index >= 0) {
 		SetBit(result, index, arrA[index]);
@@ -149,29 +148,91 @@ QInt QInt::operator- (QInt const& a)
 QInt QInt::operator* (QInt const& a)
 {
 	// *this = M
-	short k =  BitLength(a);
-	QInt result, Q;
-	Q = a;
-	bool qBit = 0;
+	QInt result, Q, M;
+	M = *this;
+	bool C;
+	int shift = 0;
 
-	while (k > 0)
+	// Overflow
+	int n = 2 * BitLength(a);
+	if (n > 128)
 	{
-		bool lastBit = GetBit(Q, 127);
-		if (lastBit == 1 && qBit == 0)
+		throw "Overflow";
+	}
+	
+	if (GetBit(*this, 0) && GetBit(a, 0)) // If QInt *this and QInt a are both negative
+	{
+		QInt one, nca;
+		nca = a;
+		ScanQInt(one, "1", "10");
+		
+		M = ~*this;
+		M = M + one;
+		Q = ~nca;
+		Q = Q + one;
+
+		result = Multiply(M, Q);
+	}
+	else if (GetBit(*this, 0) ^ GetBit(a, 0)) // If one of the two is negative
+	{
+		QInt one, nca;
+		ScanQInt(one, "1", "10");
+		if (GetBit(*this, 0))
 		{
-			result = result - *this;
+			M = ~*this;
+			M = M + one;
+			Q = a;
 		}
-		else if (lastBit == 0 && qBit == 1)
+		else
 		{
-			result = result + *this;
+			nca = a;
+			Q = ~nca;
+			Q = Q + one;
+			M = *this;
 		}
-		qBit = GetBit(Q, 127);
+		result = Multiply(M, Q);
+		result = ~result;
+		result = result + one;
+	}
+	else if (GetBit(*this, 0) | GetBit(a, 0)) // If both are positive
+	{
+		result = Multiply(M, Q);
+	}
+	return result;
+}
+
+//
+QInt Multiply(QInt M, QInt Q)
+{
+	QInt A, result;
+	int k = BitLength(Q);
+	int qbit = k;
+	bool lastABit = 0;
+
+	while(k > 0)
+	{
+		if (GetBit(Q, 127)) // If last bit of Q is 1 -> A + M
+		{
+			A = A + M;
+		}
+		lastABit = GetBit(A, 127);
+		A >> 1;
 		Q >> 1;
-		result >> 1;
+		SetBit(Q, 128 - qbit, lastABit);
+		k--;
+	}
+
+	result = Q;
+	// Combine A and Q bit string
+	k = 128 - qbit - 1;
+	for (int i = 127; i >= 128 - qbit; i--)
+	{
+		SetBit(result, k, GetBit(A, i));
 		k--;
 	}
 	return result;
 }
+
 void ShiftLeft(QInt& a, QInt& q) {
 	a << 1;
 	SetBit(a, 127, GetBit(q, 0));

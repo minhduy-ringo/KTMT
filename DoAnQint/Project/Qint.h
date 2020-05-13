@@ -28,7 +28,7 @@ struct QInt
 	// Operator
 	void operator=(QInt const& a);
 
-	QInt SoDoi(string a);
+	QInt TwoComponent(string a);
 
 	QInt operator+(QInt const& a);
 	QInt operator-(QInt const& a);
@@ -66,6 +66,7 @@ string HexToBin(string s);
 string AddStr(string a, string b);
 string SubStr(string a, string b);
 string Multi(char base, int exp);
+QInt Multiply(QInt M, QInt Q);
 
 //
 char* DecToHex(string s);

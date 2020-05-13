@@ -33,8 +33,12 @@ int main(int argc, char* argv[])
 
 			list_command = Readfile(inFile);
 
+			int count = 1;
+
 			for (list_it = list_command.begin(); list_it != list_command.end(); ++list_it)
 			{
+				cout << "Lenh: " << count << endl;
+				count++;
 				vector<string> token = *list_it;
 				QInt q1,q2,qr;
 				switch (token.size())
@@ -66,7 +70,10 @@ int main(int argc, char* argv[])
 					break;
 				case 4:
 					ScanQInt(q1, token[1], token[0]);
-					ScanQInt(q2, token[3], token[0]);
+					if (token[2] == ">>" || token[2] == "<<" || token[2] == "ror" || token[2] == "rol")
+						ScanQInt(q2, token[3], "10");
+					else
+						ScanQInt(q2, token[3], token[0]);
 					result = Calculate(q1, q2, token[2], token[0]);
 					v_result.push_back(result);
 					break;
@@ -83,5 +90,4 @@ int main(int argc, char* argv[])
 			return 1;
 		}
 	}
-	system("pause");
 }
