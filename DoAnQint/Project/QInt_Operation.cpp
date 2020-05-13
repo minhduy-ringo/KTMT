@@ -160,44 +160,37 @@ QInt QInt::operator* (QInt const& a)
 		if (lastBit == 1 && qBit == 0)
 		{
 			result = result - *this;
-			PrintQInt(result);
 		}
 		else if (lastBit == 0 && qBit == 1)
 		{
 			result = result + *this;
-			PrintQInt(result);
 		}
 		qBit = GetBit(Q, 127);
 		Q >> 1;
 		result >> 1;
 		k--;
 	}
-	PrintQInt(result);
-	PrintQInt(Q);
 	return result;
 }
 void ShiftLeft(QInt& a, QInt& q) {
 	a << 1;
 	SetBit(a, 127, GetBit(q, 0));
 	cout << "a sau khi dich bit la: ";
-	PrintQInt(a);
 
 	q << 1;
 	SetBit(q, 127, 0);
 	cout << "q sau khi dich la: ";
-	PrintQInt(q);
 }
+
 //operator /
 QInt QInt::operator/ (QInt const&b)
 {
 	QInt m = *this;
 	cout << "m = ";
-	PrintQInt(m);
 	QInt a;
 	QInt q = b;
 	int n, k;
 	cout << "b = ";
-	PrintQInt(b);
 	if (GetSign(q))
 	{
 		//khởi tạo a = 1, q<0
@@ -241,17 +234,14 @@ QInt QInt::operator/ (QInt const&b)
 		}
 	}
 	cout << "a = ";
-	PrintQInt(a);
 
 	cout << "q = ";
-	PrintQInt(q);
 	while (k > 0) {
 		
 		cout << " lan thu " << k << endl;
 		ShiftLeft(a, q);
 		a = a - m;
 		cout << "a-m = ";
-		PrintQInt(a);
 		//cout << BinToDec(a) << endl;
 		if (a < DecToBin("0"))
 		{
@@ -264,9 +254,7 @@ QInt QInt::operator/ (QInt const&b)
 		k--;
 	}
 	cout << "thuong la: ";
-	PrintQInt(q);
 	cout << "so du: ";
-	PrintQInt(a);
 
 	return m;
 }

@@ -49,21 +49,26 @@ struct QInt
 	QInt operator |(QInt const& a);
 	QInt operator ^(QInt const& a);
 	QInt operator ~();
-	QInt RotateLeft();
+	string rol(int n);
+	string ror(int n);
 
 };
 
 // void InitQInt(QInt &a);
 void ScanQInt(QInt& a, string s, string base);
-void PrintQInt(QInt a);
+string QIntToString(QInt a);
 bool GetBit(QInt a, int i);
 void SetBit(QInt &a, int i, bool bit);
 bool GetSign(QInt a);
 int BitLength(QInt a);
 string Div2(string s);
+string HexToBin(string s);
+string AddStr(string a, string b);
+string SubStr(string a, string b);
+string Multi(char base, int exp);
 
 //
-char* DecToHex(QInt a);
+char* DecToHex(string s);
 char* BinToHex(QInt a);
 QInt DecToBin(string a);
 string BinToDec(QInt a);
