@@ -4,9 +4,9 @@
 int main(int argc, char* argv[])
 {
 	// Uncomment this to debug
-	argc = 3;
+	/*argc = 3;
 	argv[1] = "input.txt";
-	argv[2] = "output.txt";
+	argv[2] = "output.txt";*/
 	//"test abc"
 
 	if (argc != 3)
