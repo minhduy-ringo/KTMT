@@ -51,4 +51,4 @@ ipch/
 *.VC.VC.opendb
 
 # java
-.jar
+*.jar
