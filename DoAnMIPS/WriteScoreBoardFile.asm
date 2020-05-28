@@ -1,7 +1,5 @@
 .data
 output_file_path: .asciiz "./nguoichoi.txt"
-teststr1:	  .asciiz "playername"
-teststr2:	  .asciiz "score"
 space:		  .asciiz " "
 line_break:	  .asciiz "\n"
 .text
@@ -17,10 +15,6 @@ WriteFile:
 	subu $sp, $sp, 8
 	sw $ra, 4($sp)
 	sw $s0, 0($sp)
-
-	# For test, delete this after debug
-	# la $a0, teststr1
-	# la $a1, teststr2
 
 	move $t0, $a0
 	move $t1, $a1

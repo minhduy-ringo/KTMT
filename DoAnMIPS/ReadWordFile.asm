@@ -6,8 +6,8 @@ word:		 .space 255
 
 .text
 
-.globl ReadFile
-ReadFile:
+.globl ReadWordFile
+ReadWordFile:
 	# Save return address $ra, $s0
 	subu $sp, $sp, 8
 	sw $ra, 4($sp)
@@ -37,6 +37,7 @@ ReadFile:
 
 	# Read
 	la $s0, word
+	li $t2, 0
 	bne $t7, 1, Read
 
 ReadFirst:
@@ -58,6 +59,7 @@ RRead:
 	beq $t0, '*', EndRead
 	sb $t0, 0($s0)
 	addi $s0, $s0, 1
+	addi $t2, $t2, 1 # count word length
 	j RRead
 
 LoopToWord:
@@ -88,8 +90,9 @@ ExitReadFile:
 	addu $sp, $sp, 4
 	lw $ra, ($sp)
 
-	# Save word to $v0 to return
+	# Save word to $v0, word length to $v1 to return
 	la $v0, word
+	move $v1, $t2
 	
 	jr $ra
 
