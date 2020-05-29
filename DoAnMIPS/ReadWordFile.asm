@@ -59,7 +59,7 @@ RRead:
 	beq $t0, '*', EndRead
 	sb $t0, 0($s0)
 	addi $s0, $s0, 1
-	addi $t2, $t2, 1 # count word length
+	addi $t2, $t2, 1 # Count word length
 	j RRead
 
 LoopToWord:
@@ -75,9 +75,9 @@ NInc:
 	j LoopToWord
 EndLTW:
 	jr $ra
+
 EndRead:
 	sb $zero, 0($s0) # Add null-terminate 
-	j ExitReadFile
 
 ExitReadFile:
 	# Close file
