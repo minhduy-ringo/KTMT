@@ -10,7 +10,6 @@ chooseMsg: 	.asciiz "Choose: "
 
 #
 playerName:	.space 32
-score:		.word 0
 
 .text
 
@@ -59,9 +58,7 @@ MenuLoop:
 #
 GoGame:
 	# $a0 = player name
-	# $a1 = score
 	la $a0, playerName
-	la $a1, score
 	jal Game
 
 GoScoreBoard:

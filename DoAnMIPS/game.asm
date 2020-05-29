@@ -2,15 +2,15 @@
 winMsg:		.asciiz "You win!\n"
 loseMsg:	.asciiz "You lose\n"
 scoreMsg:	.asciiz "Your score: "
-guessPromt:	.asciiz "Guess 1.A character / 2. Word ? "
+guessPromt1:	.asciiz "Guess 1.A character / 2. Word ? "
+guessPromt2:	.asciiz "Your guess: "
 afterWinPromt:	.asciiz "1. Continue / 2. Exit to menu ? "
 afterLosePromt: .asciiz "1. Play again / 2. Exit to menu ? " 
 breakBar:	.asciiz "=====================================\n"
 
-error:		.word 0
-gameState:	.byte 0	 	# To check which state the game is in
-				# 0: win, 1: lose
+score:		.word 0
 pseudoWord:	.space 255
+guessInput:	.space 255
 
 .text
 .globl Game
@@ -18,19 +18,19 @@ Game:
 	# Save $ra return address to main
 	subu $sp, $sp, 4
 	sw $ra, ($sp)
-
 	# Save player name from $a0 to $s0
-	# Save player score from $a1 to $s1
+	move $s0, $a0
+Game.Init:
+	# reserve $s1 for score for each round
 	# reserve $s2 for word
 	# reserve $s3 for word pseudo
 	# reserve $s4 for word length
-	move $s0, $a0
-
+	# reserve $s5 for error
+	li $s1, 0
 	jal ReadWordFile
 	move $s2, $v0
 	move $s4, $v1
 	la $s3, pseudoWord
-
 	li $t0, 1
 	li $t1, '*'
 CreatePseudo:
@@ -38,36 +38,90 @@ CreatePseudo:
 	addi $s3, $s3, 1
 	addi $t0, $t0, 1
 	bne $t0, $s4, CreatePseudo
-	
-GameProcess:
-	la $t0, ($s2)
-	la $s3, pseudoWord
 
-	# Print guess promt and take input
+GameProcess:
+	# Print word pseudo
 	li $v0, 4
-	la $a0, guessPromt
+	la $a0, pseudoWord
+	syscall
+	li $v0, 11
+	li $a0, 10
+	syscall
+
+	# Print guess promt
+	li $v0, 4
+	la $a0, guessPromt1
 	syscall
 	li $v0, 5
 	syscall
 	
 	# Check user input and call GuessWord or GuessChar function
-	# Save $t0
-	subu $sp, $sp, 4
-	sw $t0, ($sp)
-	# beq $v0, 0, GuessWord
-	# beq $v0, 1, GuessChar
-	lw $t0, ($s0)
-	addu $sp, $sp, 4
+	beq $v0, 1, GuessChar
+	beq $v0, 2, GuessWord
 
-	# Check answer
-	# Guess char 0: wrong, 1: correct
-	# Guess word 2: lose, 3: win
-CheckAnswer:
-	beq $v0, 2, LoseScreen
-	beq $v0, 3, WinScreen
+GuessChar:
+	# $a0: player input
+	# $a1: word
+	# $a2: word length
+	# $a3: word pseudo
+	# return in $v0: -1 if wrong, n if corerct with n equal number of time the character appear in the word
+	# return in $v1: new word pseudo
+
+	# Take player guess
+	li $v0, 4
+	la $a0, guessPromt2
+	syscall
+	li $v0, 8
+	la $a0, guessInput
+	syscall
+
+	la $a0, guessInput
+	la $a1, ($s2)
+	la $a2, ($s3)
+	la $a3, ($s4)
+	# jal GuessChar
+	move $s3, $v1
+	beq $v0, -1, GuessChar.Wrong
+GuessChar.Correct:
+	# inc round score
+	add $s1, $s1, $v0
+	beq $s1, $s4, WinScreen
+	j GameProcess
+GuessChar.Wrong:
+	# Inc error
+	addi $s5, $s5, 1
+	# Call draw
+	move $a0, $s5
+	# jal DrawHangMan
+	beq $s5, 7, LoseScreen
+	j GameProcess
+
+GuessWord:
+	# $a0: player input
+	# $a1: word
+	# $a2: word length
+	# return: $v0 result
+
+	# Take player guess
+	li $v0, 4
+	la $a0, guessPromt2
+	syscall
+	li $v0, 8
+	la $a0, guessInput
+	syscall
+
+	la $a0, guessInput
+	la $a1, ($s2)
+	la $a2, ($s4)
+	# jal GuessWord
 	
+	beq $v0, 0, LoseScreen
+	beq $v0, 1, WinScreen
 	
 WinScreen:
+	# Add score
+	la $t0, score
+	add $t0, $t0, $s1
 	# Print win message
 	li $v0, 4
 	la $a0, winMsg
@@ -77,7 +131,7 @@ WinScreen:
 	la $a0, scoreMsg
 	syscall
 	li $v0, 1
-	la $a0, ($s1)
+	la $a0, score
 	syscall
 	# Print win promt
 	li $v0, 4
@@ -86,8 +140,8 @@ WinScreen:
 	# Get input
 	li $v0, 5
 	syscall
-	# Check input
-	beq $v0, 1, 
+	beq $v0, 1, Game.Init
+	beq $v0, 2, Win.ExitToMenu
 	
 LoseScreen:
 	# Save player score to file
@@ -105,14 +159,28 @@ LoseScreen:
 	li $v0, 1
 	la $a0, ($s1)
 	syscall
+	# Draw hang man
+	li $a0, 7
+	#jal DrawHangMan
 	# Print lose promt
 	li $v0, 4
 	la $a0, afterLosePromt
 	syscall
 	li $v0, 5
 	syscall
+	beq $v0, 1, Game.Init
+	beq $v0, 2, Lose.ExitToMenu
 
-SaveScore:
-	
+Win.ExitToMenu:
+	# Save player score to file
+	move $a0, $s0
+	move $a1, $s1
+	jal WriteFile
 
-ExitGame:
+	lw $ra, ($sp)
+	addu $sp, $sp, 4
+	jr $ra
+Lose.ExitToMenu:
+	lw $ra, ($sp)
+	addu $sp, $sp, 4
+	jr $ra
