@@ -11,12 +11,13 @@ GuessChar:
 	# $a3: word pseudo
 	# return in $v0: 0 if wrong, n if corerct with n equal number of time the character appear in the word
 
-	li	$t0, 1	# Khoi tao bien dem
+	li	$t0, 0	# Khoi tao bien dem
 	li 	$t1, 0	# Luu so ki tu xuat hien
+	move	$t3, $a2
 	
 CheckCharacter:
 	# Kiem tra dieu kien lap
-	beq 	$t0, $a2, GoExit
+	beq 	$t0, $t3, GoExit
 	# Kiem tra ki tu 
 	lb	$t2, ($a1)
 	beq 	$a0, $t2, CheckCharacter.IncScore

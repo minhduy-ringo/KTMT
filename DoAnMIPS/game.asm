@@ -4,11 +4,11 @@ loseMsg:	.asciiz "You lose\n"
 scoreMsg:	.asciiz "Your score: "
 guessPromt1:	.asciiz "Guess 1.A character / 2. Word ? "
 guessPromt2:	.asciiz "Your guess: "
+answerMsg:	.asciiz "The word is: "
 afterWinPromt:	.asciiz "1. Continue / 2. Exit to menu ? "
 afterLosePromt: .asciiz "1. Play again / 2. Exit to menu ? " 
 breakBar:	.asciiz "==========================================\n"
 
-score:		.word 0
 pseudoWord:	.space 255
 guessInput:	.space 255
 
@@ -26,9 +26,17 @@ Game.Init:
 	# reserve $s3 for word pseudo
 	# reserve $s4 for word length
 	# reserve $s5 for error
+	# reserve $s6 for overall score
+	# reserve $s7 for number of round win
 	li 	$s1, 0
+	li	$s6, 0
+	li	$s7, 0
+
 	jal 	ReadWordFile
-	move 	$s2, $v0
+	move 	$a0, $v0
+	li	$v0, 4
+	syscall
+	move 	$s2, $a0
 	move 	$s4, $v1
 	
 	la 	$s3, pseudoWord
@@ -42,6 +50,9 @@ CreatePseudo:
 
 GameProcess:
 	# Print word pseudo
+	li 	$v0, 4
+	la	$a0, answerMsg
+	syscall
 	li 	$v0, 4
 	la 	$a0, pseudoWord
 	syscall
@@ -96,7 +107,7 @@ GuessChar.Wrong:
 	addi 	$s5, $s5, 1
 	# Call draw
 	move 	$a0, $s5
-	#jal	DrawHangMan
+	jal	DrawHangMan
 	beq 	$s5, 7, LoseScreen
 	j 	GameProcess
 
@@ -124,18 +135,32 @@ GoGuessWord:
 	
 WinScreen:
 	# Add score
-	la 	$t0, score
-	add 	$t0, $t0, $s1
+	add	$s6, $s6, $s1
+	# Add round win
+	addi	$s7, $s7, 1
 	# Print win message
 	li 	$v0, 4
 	la 	$a0, winMsg
+	syscall
+	# Print answer
+	li	$v0, 4
+	la	$a0, answerMsg
+	syscall
+	li 	$v0, 4
+	la	$a0, ($s2)
+	syscall
+	li 	$v0, 11
+	li	$a0, 10
 	syscall
 	# Print score
 	li 	$v0, 4
 	la 	$a0, scoreMsg
 	syscall
 	li 	$v0, 1
-	la 	$a0, score
+	la 	$a0, ($t0)
+	syscall
+	li	$v0, 11
+	li	$a0, 10
 	syscall
 	# Print win promt
 	li 	$v0, 4
@@ -148,9 +173,10 @@ WinScreen:
 	beq 	$v0, 2, Win.ExitToMenu
 	
 LoseScreen:
-	# Save player score to file
+	# Save player name and score to file
 	move 	$a0, $s0
-	move 	$a1, $s1
+	move 	$a1, $s6
+	move	$a2, $s7
 	jal 	WriteFile
 	# Print lose message
 	li 	$v0, 4
@@ -161,11 +187,11 @@ LoseScreen:
 	la 	$a0, scoreMsg
 	syscall
 	li 	$v0, 1
-	la 	$a0, ($s1)
+	move 	$a0, $s6
 	syscall
-	# Draw hang man
-	li 	$a0, 7
-	#jal 	DrawHangMan
+	li	$v0, 11
+	li	$a0, 10
+	syscall
 	# Print lose promt
 	li 	$v0, 4
 	la 	$a0, afterLosePromt
@@ -176,9 +202,10 @@ LoseScreen:
 	beq 	$v0, 2, Lose.ExitToMenu
 
 Win.ExitToMenu:
-	# Save player score to file
+	# Save player num, score and round win to file
 	move 	$a0, $s0
-	move 	$a1, $s1
+	move 	$a1, $s6
+	move	$a2, $s7
 	jal 	WriteFile
 
 	lw 	$ra, ($sp)
