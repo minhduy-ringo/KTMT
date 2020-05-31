@@ -2,7 +2,7 @@
 input_file_path: .asciiz "dethi.txt"
 n:		 .word 144
 chr:		 .space 8
-word:		 .space 255
+word:		 .space 100
 
 .text
 

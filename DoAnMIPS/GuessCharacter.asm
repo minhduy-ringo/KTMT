@@ -42,6 +42,7 @@ CheckCharacter.IncScore:
 GoExit:
 	# Restore $ra
 	lw 	$ra, ($sp)
+	addi	$sp, $sp, 4
 	la 	$v0, ($t1)
 	jr 	$ra
 	

@@ -168,7 +168,7 @@ WinScreen:
 	la 	$a0, scoreMsg
 	syscall
 	li 	$v0, 1
-	la 	$a0, ($t0)
+	move 	$a0, $s6
 	syscall
 	li	$v0, 11
 	li	$a0, 10
@@ -184,10 +184,10 @@ WinScreen:
 	beq 	$v0, 2, Win.ExitToMenu
 	
 LoseScreen:
-	# Save player name and score to file
-	move 	$a0, $s0
-	move 	$a1, $s6
-	move	$a2, $s7
+	# Save
+	move 	$a0, $s0	# Player name
+	move 	$a1, $s6	# Player score
+	move	$a2, $s7	# Player round win
 	jal 	WriteFile
 	# Print lose message
 	li 	$v0, 4
@@ -203,6 +203,9 @@ LoseScreen:
 	li	$v0, 11
 	li	$a0, 10
 	syscall
+	# Reset overall score and round win
+	li	$s6, 0
+	li	$s7, 0
 	# Print lose promt
 	li 	$v0, 4
 	la 	$a0, afterLosePromt

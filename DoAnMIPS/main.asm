@@ -3,10 +3,12 @@
 welcomeMsg:	.asciiz "Welcome to the hang man game\n"
 namePromt:	.asciiz "Please type in your player name: "
 menuMsg:	.asciiz "===================Menu===================\n"
-newGameMsg: 	.asciiz "1.Play\n"
-scoreboardMsg: 	.asciiz "2.Score board\n"
-exitMsg: 	.asciiz "3.Exit\n"
+newGameOpt: 	.asciiz "1.Play\n"
+scoreboardOpt: 	.asciiz "2.Score board\n"
+exitOpt: 	.asciiz "3.Exit\n"
+exitMsg:	.asciiz "Thanks you for playing!!\n"
 chooseMsg: 	.asciiz "Choose: "
+
 breakBar:	.asciiz "==========================================\n"
 
 #
@@ -30,19 +32,19 @@ main:
 	li 	$v0, 11
 	li 	$a0, 10
 	syscall
-
+Menu:
 	# Display menu
 	li 	$v0, 4
 	la 	$a0, menuMsg
 	syscall
 	li 	$v0, 4
-	la 	$a0, newGameMsg
+	la 	$a0, newGameOpt
 	syscall
 	li 	$v0, 4
-	la 	$a0, scoreboardMsg 
+	la 	$a0, scoreboardOpt
 	syscall
 	li 	$v0, 4
-	la 	$a0, exitMsg
+	la 	$a0, exitOpt
 	syscall
 	li 	$v0, 4
 	la 	$a0, breakBar
@@ -66,11 +68,16 @@ GoGame:
 	# $a0 = player name
 	la 	$a0, playerName
 	jal 	Game
+	j	Menu
 
 GoScoreBoard:
 	#jal 	ScoreBoard
+	j	Menu
 
 GoExit:
+	li 	$v0, 4
+	la 	$a0, exitMsg
+	syscall
 	li 	$v0,10
 	syscall
 
