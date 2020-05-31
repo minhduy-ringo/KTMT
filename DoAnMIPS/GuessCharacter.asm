@@ -16,11 +16,16 @@ GuessChar:
 	move	$t3, $a2
 	
 CheckCharacter:
-	# Kiem tra dieu kien lap
+	# Check loop condition
 	beq 	$t0, $t3, GoExit
-	# Kiem tra ki tu 
+	# Loop through each character in the string, compare to pseudo if this position is guessed yet or not
+	# If char was already guessed, skip this char
+	lb	$t2, ($a3)
+	bne	$t2, '*', CheckCharacter.Skip
+	# Else check if input char is corresponding to char positioned in string
 	lb	$t2, ($a1)
 	beq 	$a0, $t2, CheckCharacter.IncScore
+CheckCharacter.Skip:
 	addi	$a1, $a1, 1
 	addi	$a3, $a3, 1
 	addi 	$t0, $t0, 1
