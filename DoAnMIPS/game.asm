@@ -9,8 +9,8 @@ afterWinPromt:	.asciiz "1. Continue / 2. Exit to menu ? "
 afterLosePromt: .asciiz "1. Play again / 2. Exit to menu ? " 
 breakBar:	.asciiz "==========================================\n"
 
-pseudoWord:	.space 255
-guessInput:	.space 255
+pseudoWord:	.space 100
+guessInput:	.space 100
 
 .text
 .globl Game
@@ -20,18 +20,28 @@ Game:
 	sw 	$ra, ($sp)
 	# Save player name from $a0 to $s0
 	move 	$s0, $a0
+	
+	# reserve $s6 for overall score
+	# reserve $s7 for number of round win
+	li	$s6, 0
+	li	$s7, 0
 Game.Init:
-	# reserve $s1 for score for each round
+	# reserve $s1 for score each round
 	# reserve $s2 for word
 	# reserve $s3 for word pseudo
 	# reserve $s4 for word length
-	# reserve $s5 for error
-	# reserve $s6 for overall score
-	# reserve $s7 for number of round win
+	# reserve $s5 for error each round
 	li 	$s1, 0
-	li	$s6, 0
-	li	$s7, 0
-
+	la 	$s3, pseudoWord
+	# clear psedu word buffer
+	li	$t0, 0
+ClearBuffer:
+	lb	$t0, ($s3)
+	beq 	$t0, 0, ClearBuffer.Exit
+	sb	$zero, ($s3)
+	addi	$s3, $s3, 1
+	j ClearBuffer
+ClearBuffer.Exit:
 	jal 	ReadWordFile
 	move 	$a0, $v0
 	li	$v0, 4
@@ -68,8 +78,9 @@ GameProcess:
 	syscall
 	
 	# Check user input and call GuessWord or GuessChar function
-	beq $v0, 1, GoGuessChar
-	beq $v0, 2, GoGuessWord
+	beq 	$v0, 1, GoGuessChar
+	beq 	$v0, 2, GoGuessWord
+	j	GameProcess
 
 GoGuessChar:
 	# $a0: player input
@@ -215,3 +226,9 @@ Lose.ExitToMenu:
 	lw 	$ra, ($sp)
 	addu 	$sp, $sp, 4
 	jr 	$ra
+
+.ktext 0x80000180
+	mfc0 	$k0,$14   # Coprocessor 0 register $14 has address of trapping instruction
+   	addi 	$k0,$k0,4 # Add 4 to point to next instruction
+   	mtc0 	$k0,$14   # Store new address back into $14
+   	eret           # Error return; set PC to value in $14
