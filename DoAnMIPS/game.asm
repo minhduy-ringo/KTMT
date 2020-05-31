@@ -226,9 +226,3 @@ Lose.ExitToMenu:
 	lw 	$ra, ($sp)
 	addu 	$sp, $sp, 4
 	jr 	$ra
-
-.ktext 0x80000180
-	mfc0 	$k0,$14   # Coprocessor 0 register $14 has address of trapping instruction
-   	addi 	$k0,$k0,4 # Add 4 to point to next instruction
-   	mtc0 	$k0,$14   # Store new address back into $14
-   	eret           # Error return; set PC to value in $14
