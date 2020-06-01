@@ -32,6 +32,7 @@ Game.Init:
 	# reserve $s4 for word length
 	# reserve $s5 for error each round
 	li 	$s1, 0
+	li	$s5, 0
 	la 	$s3, pseudoWord
 	# clear psedu word buffer
 	li	$t0, 0
@@ -43,10 +44,7 @@ ClearBuffer:
 	j ClearBuffer
 ClearBuffer.Exit:
 	jal 	ReadWordFile
-	move 	$a0, $v0
-	li	$v0, 4
-	syscall
-	move 	$s2, $a0
+	move 	$s2, $v0
 	move 	$s4, $v1
 	
 	la 	$s3, pseudoWord
@@ -137,16 +135,16 @@ GoGuessWord:
 	syscall
 
 	la 	$a0, guessInput
-	la 	$a1, ($s2)
-	la 	$a2, ($s4)
-	#jal	GuessWord
+	move 	$a1, $s2
+	move	$a2, $s4
+	jal	GuessWord
 	
 	beq 	$v0, 0, LoseScreen
 	beq 	$v0, 1, WinScreen
 	
 WinScreen:
 	# Add score
-	add	$s6, $s6, $s1
+	add	$s6, $s6, $s4
 	# Add round win
 	addi	$s7, $s7, 1
 	# Print win message
@@ -192,6 +190,16 @@ LoseScreen:
 	# Print lose message
 	li 	$v0, 4
 	la 	$a0, loseMsg
+	syscall
+	# Print answer
+	li	$v0, 4
+	la	$a0, answerMsg
+	syscall
+	li 	$v0, 4
+	la	$a0, ($s2)
+	syscall
+	li 	$v0, 11
+	li	$a0, 10
 	syscall
 	# Print score
 	li 	$v0, 4

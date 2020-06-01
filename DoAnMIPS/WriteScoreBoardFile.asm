@@ -16,7 +16,7 @@ round:		  .space 10
 
 WriteFile:
 	# Save return address $ra, $s0, $s1, $s2
-	subu 	$sp, $sp, 12
+	subu 	$sp, $sp, 16
 	sw 	$ra, ($sp)
 	sw	$s0, 4($sp)
 	sw	$s1, 8($sp)

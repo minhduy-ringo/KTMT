@@ -89,6 +89,7 @@ ExitReadFile:
 	lw 	$s0, ($sp)
 	addu 	$sp, $sp, 4
 	lw 	$ra, ($sp)
+	addu	$sp, $sp, 4
 
 	# Save word to $v0, word length to $v1 to return
 	la 	$v0, word
