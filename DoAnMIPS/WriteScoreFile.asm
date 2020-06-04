@@ -3,10 +3,11 @@ output_file_path: .asciiz "./nguoichoi.txt"
 space:		  .asciiz " "
 line_break:	  .asciiz "\n"
 
-score:		  .space 10
-round:		  .space 10
+score:		  .space 8
+round:		  .space 8
+pString:	  .space 32
 .text
-.globl WriteFile
+.globl WriteScoreFile
 
 # How to call
 # $a0 = player's name
@@ -14,7 +15,7 @@ round:		  .space 10
 # $a2 = player's round win
 # jal WriteFile
 
-WriteFile:
+WriteScoreFile:
 	# Save return address $ra, $s0, $s1, $s2
 	subu 	$sp, $sp, 16
 	sw 	$ra, ($sp)
@@ -55,6 +56,9 @@ WriteFile:
 	la 	$a1, space
 	la 	$a2, 1
 	syscall
+	li	$t3, ' '
+	sb	$t3, ($t2)
+	addi	$t2, $t2, 1
 
 	# Convert score to string
 	la	$v0, score
@@ -75,6 +79,9 @@ WriteFile:
 	la 	$a1, space
 	la 	$a2, 1
 	syscall
+	li	$t3, ' '
+	sb	$t3, ($t2)
+	addi	$t2, $t2, 1
 
 	# Convert round to string
 	la	$v0, round
@@ -101,7 +108,10 @@ WriteFile:
 	move 	$a0, $t8
 	syscall
 
-	j ExitWriteFile
+	#la	$a0, pString
+	#move	$a1, $s1
+	#jal 	WriteScoreBoardFile
+	j 	ExitWriteFile
 
 ExitWriteFile:
 	lw 	$ra, ($sp)
@@ -121,8 +131,10 @@ StrLength:
 	lb 	$t0, 0($a0)
 	beq 	$t0, $zero, sLengthEnd
 	beq 	$t0, 10, sLengthEnd
+	sb	$t0, ($t2)
 	addi 	$v0, $v0, 1
 	addi 	$a0, $a0, 1
+	addi	$t2, $t2, 1
 	j 	StrLength
 sLengthEnd:
 	jr 	$ra
@@ -144,7 +156,9 @@ IntToStr.Reverse:
 	lb	$t0, ($sp)
 	addu	$sp, $sp, 1
 	sb	$t0, ($v0)
+	sb	$t0, ($t2)
 	addi	$v0, $v0, 1
 	addi	$t1, $t1, 1
+	addi	$t2, $t2, 1
 	bne	$t1, $v1, IntToStr.Reverse
 	jr 	$ra

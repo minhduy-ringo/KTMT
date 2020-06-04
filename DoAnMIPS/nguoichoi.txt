@@ -6,4 +6,7 @@ abc 12 2
 abc 13 2
 abc 12 2
 abc 0 0
-abc 5 1
+abc 5 1akaringo 11 1
+akaringo 5 1
+nguoichoi1 10 1
+abc 0 0

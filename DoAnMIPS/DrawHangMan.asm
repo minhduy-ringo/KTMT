@@ -5,14 +5,6 @@ gBarTop2: 	.asciiz "|/           |\n"
 gStand: 	.asciiz "|\n|\n|\n|\n|\n"
 
 # Hangman visual
-mHead:   	.asciiz "|            O\n"
-mBody:   	.asciiz "|            |\n"
-mLeftArm: 	.asciiz "|           /| \n"
-mRightArm:	.asciiz "|           /|\\ \n"
-mLeftLeg: 	.asciiz "|           /\n"
-mRightLeg:	.asciiz "|           / \\ \n"
-mLeftOverStand: .asciiz "|\n|\n"
-
 FirstWrong:	.asciiz "\n______\n|/   |\n|\n|\n|\n|\n|\n"
 SecondWrong:.asciiz "\n______\n|/   |\n|    O\n|\n|\n|\n|\n"
 ThirdWrong:	.asciiz "\n______\n|/   |\n|    O\n|    |\n|\n|\n|\n"
@@ -23,8 +15,12 @@ SeventhWrong:.asciiz "\n______\n|/   |\n|    O\n|   /|\\\n|   / \\\n|\n|\n"
 
 .text
 
-# Draw hang man
 .globl DrawHangMan
+
+# How to call
+# $a0 = number of error
+# jal WriteFile
+
 DrawHangMan:
 	subu 	$sp, $sp, 4
 	sw	$ra, ($sp)

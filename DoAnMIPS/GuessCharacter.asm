@@ -1,5 +1,14 @@
 .text
+
 .globl GuessChar
+
+# How to call
+# $a0: player input
+# $a1: word
+# $a2: word length
+# $a3: word pseudo
+# jal GuessChar
+
 GuessChar:
 	# Save return address $ra
 	subu	$sp, $sp, 4

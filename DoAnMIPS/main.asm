@@ -12,7 +12,7 @@ chooseMsg: 	.asciiz "Choose: "
 breakBar:	.asciiz "==========================================\n"
 
 #
-playerName:	.space 32
+playerName:	.space 16
 
 .text
 
@@ -27,7 +27,7 @@ main:
 	syscall
 	li 	$v0, 8
 	la 	$a0, playerName
-	la 	$a1, 32
+	la 	$a1, 16
 	syscall
 	li 	$v0, 11
 	li 	$a0, 10
@@ -71,7 +71,8 @@ GoGame:
 	j	Menu
 
 GoScoreBoard:
-	#jal 	ScoreBoard
+	li	$a0, 1
+	jal 	ReadScoreBoard
 	j	Menu
 
 GoExit:

@@ -1,8 +1,13 @@
-.data
-
 .text
 
 .globl GuessWord
+
+# How to call
+# $a0: player input
+# $a1: word
+# $a2: word length
+# jal GuessWord
+
 GuessWord:
 	# Save $ra return address to main
 	subu 	$sp, $sp, 4

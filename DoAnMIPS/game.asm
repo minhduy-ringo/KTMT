@@ -20,7 +20,7 @@ Game:
 	sw 	$ra, ($sp)
 	# Save player name from $a0 to $s0
 	move 	$s0, $a0
-	
+
 	# reserve $s6 for overall score
 	# reserve $s7 for number of round win
 	li	$s6, 0
@@ -186,7 +186,7 @@ LoseScreen:
 	move 	$a0, $s0	# Player name
 	move 	$a1, $s6	# Player score
 	move	$a2, $s7	# Player round win
-	jal 	WriteFile
+	jal 	WriteScoreFile
 	# Print lose message
 	li 	$v0, 4
 	la 	$a0, loseMsg
@@ -228,7 +228,7 @@ Win.ExitToMenu:
 	move 	$a0, $s0
 	move 	$a1, $s6
 	move	$a2, $s7
-	jal 	WriteFile
+	jal 	WriteScoreFile
 
 	lw 	$ra, ($sp)
 	addu 	$sp, $sp, 4
