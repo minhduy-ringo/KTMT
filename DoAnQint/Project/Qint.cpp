@@ -292,27 +292,27 @@ string Calculate(QInt q1, QInt q2, string op, string base)
 		else if (op == "<")
 		{
 			rs = q1 < q2;
-			return rs ? "True" : "False";
+			return rs ? "true" : "false";
 		}
 		else if (op == ">")
 		{
 			rs = q1 > q2;
-			return rs ? "True" : "False";
+			return rs ? "true" : "false";
 		}
 		else if (op == "<=")
 		{
 			rs = q1 <= q2;
-			return rs ? "True" : "False";
+			return rs ? "true" : "false";
 		}
 		else if (op == ">=")
 		{
 			rs = q1 >= q2;
-			return rs ? "True" : "False";
+			return rs ? "true" : "false";
 		}
 		else if (op == "==")
 		{
 			rs = q1 == q2;
-			return rs ? "True" : "False";
+			return rs ? "true" : "false";
 		}
 		// BitWise
 		else if (op == "&")

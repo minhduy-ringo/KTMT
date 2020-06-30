@@ -28,7 +28,7 @@ void scanQFloat(QFloat &a, string s)
 	cout << "bin:" << bin << endl;
 	string IEE745 = convertIntoStandardIEEE754(bin, check);
 	//cout << IEE745 << endl;
-	string specialNumber[] = { "denormalized" ,"infinity" ,"NotaNumber" };
+	string specialNumber[] = { "denormalized" ,"infinity" ,"NaN" };
 	for (int i = 0;i < 3; i++)
 	{
 		if (specialNumber[i] == IEE745)
@@ -299,7 +299,7 @@ string convertIntoStandardIEEE754(string s,int check)
 		}
 		else
 		{
-			result = "NotaNumber";
+			result = "NaN";
 			return result;
 		}
 	}
@@ -852,7 +852,7 @@ string DecimaltoBinary(string s)
 	//cout << "He co so 2 :" << bin << endl;
 	string IEE745 = convertIntoStandardIEEE754(bin, check);
 	
-	string specialNumber[] = { "denormalized" ,"infinity" ,"NotaNumber" };
+	string specialNumber[] = { "denormalized" ,"infinity" ,"NaN" };
 	for (int i = 0;i < 3; i++)
 	{
 		if (specialNumber[i] == IEE745)
@@ -904,7 +904,7 @@ string BinaryToDecimal(string s)
 	}
 	if(exp == 16384 && !checkBit0(fraction))
 	{
-		resuslt = "NotaNumber";
+		resuslt = "NaN";
 		return resuslt;
 	}
 
